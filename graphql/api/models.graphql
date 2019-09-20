@@ -1,5 +1,6 @@
 
 type User {
+  id:String!
   email: String!
   name: String!
   avatar: String
@@ -22,6 +23,7 @@ type Schedule {
 }
 
 type Video {
+  id:String!
   videoId:String!
   title:String
   desc:String
@@ -36,6 +38,7 @@ enum Status {
 }
 
 type TimeLink {
+  id:String!
   videoId:String!
   time:String!
   desc:String!
