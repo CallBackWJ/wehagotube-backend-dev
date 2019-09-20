@@ -228,9 +228,7 @@ export type ScheduleOrderByInput =
   | "thumbnail_ASC"
   | "thumbnail_DESC"
   | "startTime_ASC"
-  | "startTime_DESC"
-  | "endtime_ASC"
-  | "endtime_DESC";
+  | "startTime_DESC";
 
 export type TimeLinkOrderByInput =
   | "id_ASC"
@@ -355,20 +353,6 @@ export interface ScheduleWhereInput {
   startTime_not_starts_with?: Maybe<String>;
   startTime_ends_with?: Maybe<String>;
   startTime_not_ends_with?: Maybe<String>;
-  endtime?: Maybe<String>;
-  endtime_not?: Maybe<String>;
-  endtime_in?: Maybe<String[] | String>;
-  endtime_not_in?: Maybe<String[] | String>;
-  endtime_lt?: Maybe<String>;
-  endtime_lte?: Maybe<String>;
-  endtime_gt?: Maybe<String>;
-  endtime_gte?: Maybe<String>;
-  endtime_contains?: Maybe<String>;
-  endtime_not_contains?: Maybe<String>;
-  endtime_starts_with?: Maybe<String>;
-  endtime_not_starts_with?: Maybe<String>;
-  endtime_ends_with?: Maybe<String>;
-  endtime_not_ends_with?: Maybe<String>;
   AND?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
   OR?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
   NOT?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
@@ -632,7 +616,6 @@ export interface ScheduleCreateInput {
   desc: String;
   thumbnail?: Maybe<String>;
   startTime: String;
-  endtime?: Maybe<String>;
 }
 
 export interface ScheduleUpdateInput {
@@ -640,7 +623,6 @@ export interface ScheduleUpdateInput {
   desc?: Maybe<String>;
   thumbnail?: Maybe<String>;
   startTime?: Maybe<String>;
-  endtime?: Maybe<String>;
 }
 
 export interface ScheduleUpdateManyMutationInput {
@@ -648,7 +630,6 @@ export interface ScheduleUpdateManyMutationInput {
   desc?: Maybe<String>;
   thumbnail?: Maybe<String>;
   startTime?: Maybe<String>;
-  endtime?: Maybe<String>;
 }
 
 export interface TimeLinkCreateInput {
@@ -785,7 +766,6 @@ export interface Schedule {
   desc: String;
   thumbnail?: String;
   startTime: String;
-  endtime?: String;
 }
 
 export interface SchedulePromise extends Promise<Schedule>, Fragmentable {
@@ -794,7 +774,6 @@ export interface SchedulePromise extends Promise<Schedule>, Fragmentable {
   desc: () => Promise<String>;
   thumbnail: () => Promise<String>;
   startTime: () => Promise<String>;
-  endtime: () => Promise<String>;
 }
 
 export interface ScheduleSubscription
@@ -805,7 +784,6 @@ export interface ScheduleSubscription
   desc: () => Promise<AsyncIterator<String>>;
   thumbnail: () => Promise<AsyncIterator<String>>;
   startTime: () => Promise<AsyncIterator<String>>;
-  endtime: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ScheduleNullablePromise
@@ -816,7 +794,6 @@ export interface ScheduleNullablePromise
   desc: () => Promise<String>;
   thumbnail: () => Promise<String>;
   startTime: () => Promise<String>;
-  endtime: () => Promise<String>;
 }
 
 export interface ScheduleConnection {
@@ -1229,7 +1206,6 @@ export interface SchedulePreviousValues {
   desc: String;
   thumbnail?: String;
   startTime: String;
-  endtime?: String;
 }
 
 export interface SchedulePreviousValuesPromise
@@ -1240,7 +1216,6 @@ export interface SchedulePreviousValuesPromise
   desc: () => Promise<String>;
   thumbnail: () => Promise<String>;
   startTime: () => Promise<String>;
-  endtime: () => Promise<String>;
 }
 
 export interface SchedulePreviousValuesSubscription
@@ -1251,7 +1226,6 @@ export interface SchedulePreviousValuesSubscription
   desc: () => Promise<AsyncIterator<String>>;
   thumbnail: () => Promise<AsyncIterator<String>>;
   startTime: () => Promise<AsyncIterator<String>>;
-  endtime: () => Promise<AsyncIterator<String>>;
 }
 
 export interface TimeLinkSubscriptionPayload {

@@ -93,7 +93,6 @@ type Schedule {
   desc: String!
   thumbnail: String
   startTime: String!
-  endtime: String
 }
 
 type ScheduleConnection {
@@ -108,7 +107,6 @@ input ScheduleCreateInput {
   desc: String!
   thumbnail: String
   startTime: String!
-  endtime: String
 }
 
 type ScheduleEdge {
@@ -127,8 +125,6 @@ enum ScheduleOrderByInput {
   thumbnail_DESC
   startTime_ASC
   startTime_DESC
-  endtime_ASC
-  endtime_DESC
 }
 
 type SchedulePreviousValues {
@@ -137,7 +133,6 @@ type SchedulePreviousValues {
   desc: String!
   thumbnail: String
   startTime: String!
-  endtime: String
 }
 
 type ScheduleSubscriptionPayload {
@@ -163,7 +158,6 @@ input ScheduleUpdateInput {
   desc: String
   thumbnail: String
   startTime: String
-  endtime: String
 }
 
 input ScheduleUpdateManyMutationInput {
@@ -171,7 +165,6 @@ input ScheduleUpdateManyMutationInput {
   desc: String
   thumbnail: String
   startTime: String
-  endtime: String
 }
 
 input ScheduleWhereInput {
@@ -245,20 +238,6 @@ input ScheduleWhereInput {
   startTime_not_starts_with: String
   startTime_ends_with: String
   startTime_not_ends_with: String
-  endtime: String
-  endtime_not: String
-  endtime_in: [String!]
-  endtime_not_in: [String!]
-  endtime_lt: String
-  endtime_lte: String
-  endtime_gt: String
-  endtime_gte: String
-  endtime_contains: String
-  endtime_not_contains: String
-  endtime_starts_with: String
-  endtime_not_starts_with: String
-  endtime_ends_with: String
-  endtime_not_ends_with: String
   AND: [ScheduleWhereInput!]
   OR: [ScheduleWhereInput!]
   NOT: [ScheduleWhereInput!]

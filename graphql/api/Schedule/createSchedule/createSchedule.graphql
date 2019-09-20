@@ -1,3 +1,3 @@
 type Mutation {
-  createSchedule(title:String,desc:String,start:String,end:String, thumbnail:String):Boolean!
+  createSchedule(title:String,desc:String,startTime:String, thumbnail:String):Schedule!
 }
