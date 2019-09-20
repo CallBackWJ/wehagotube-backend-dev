@@ -1,14 +1,42 @@
-type user {
-  id: String
-  name: String!
-  avatar: String!
+
+type User {
   email: String!
+  name: String!
+  avatar: String
   accessToken: String
   permission: TYPE!
 }
 
-enum TYPE {
+enum TYPE{
   ADMIN
   USER
 }
 
+type Schedule {
+   title:String!
+   desc:String!
+   thumbnail:String!
+   startTime:String!
+   endtime:String
+}
+
+type Video {
+  videoId:String!
+  title:String
+  desc:String
+  thumbnail:String!
+  viewCount:Int!
+  status:Status!
+  createdAt: DateTime!
+}
+enum Status {
+  PRIVATE
+  PUBLIC
+}
+
+type TimeLink {
+  videoId:String!
+  time:String!
+  desc:String!
+}
+ 
