@@ -1,0 +1,14 @@
+type user {
+  id: String
+  name: String!
+  avatar: String!
+  email: String!
+  accessToken: String
+  permission: TYPE!
+}
+
+enum TYPE {
+  ADMIN
+  USER
+}
+

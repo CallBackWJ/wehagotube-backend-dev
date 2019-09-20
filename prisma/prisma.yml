@@ -1,0 +1,6 @@
+endpoint: https://wehagotube-dev-ba89fc6dcd.herokuapp.com/wehagotube-db-server/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: javascript-client
+    output: ./generated/prisma-client/

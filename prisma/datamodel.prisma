@@ -1,0 +1,45 @@
+type User {
+  id: ID! @id
+  email: String! @unique
+  name: String!
+  avatar: String
+  accessToken: String
+  permission: TYPE!
+}
+
+enum TYPE{
+  ADMIN
+  USER
+}
+
+type Schedule {
+   id: ID! @id
+   title:String!
+   desc:String!
+   thumbnail:String @default(value: "http://image.zdnet.co.kr/2019/06/25/imc_vkCh0ZOG9SNi6oP8.jpg")
+   startTime:String!
+   endtime:String
+}
+
+type Video {
+  id: ID! @id
+  videoId:String! @unique
+  title:String
+  desc:String
+  thumbnail:String!
+  viewCount:Int! @default(value: 0)
+  status:Status! @default(value: PRIVATE)
+  createdAt: DateTime! @createdAt
+}
+enum Status {
+  PRIVATE
+  PUBLIC
+}
+
+type TimeLink {
+  id: ID! @id
+  videoId:String!
+  time:String!
+  desc:String!
+}
+ 
