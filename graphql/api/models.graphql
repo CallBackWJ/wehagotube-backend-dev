@@ -13,10 +13,10 @@ enum TYPE{
 }
 
 type Schedule {
-   title:String!
-   desc:String!
-   thumbnail:String!
-   startTime:String!
+   title:String
+   desc:String
+   thumbnail:String
+   startTime:String
    endtime:String
 }
 
@@ -27,7 +27,7 @@ type Video {
   thumbnail:String!
   viewCount:Int!
   status:Status!
-  createdAt: DateTime!
+  createdAt: String!
 }
 enum Status {
   PRIVATE
