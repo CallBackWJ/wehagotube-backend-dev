@@ -13,6 +13,7 @@ enum TYPE{
 }
 
 type Schedule {
+  id:String!
    title:String
    desc:String
    thumbnail:String
