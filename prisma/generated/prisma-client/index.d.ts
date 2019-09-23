@@ -391,20 +391,14 @@ export interface TimeLinkWhereInput {
   videoId_not_starts_with?: Maybe<String>;
   videoId_ends_with?: Maybe<String>;
   videoId_not_ends_with?: Maybe<String>;
-  time?: Maybe<String>;
-  time_not?: Maybe<String>;
-  time_in?: Maybe<String[] | String>;
-  time_not_in?: Maybe<String[] | String>;
-  time_lt?: Maybe<String>;
-  time_lte?: Maybe<String>;
-  time_gt?: Maybe<String>;
-  time_gte?: Maybe<String>;
-  time_contains?: Maybe<String>;
-  time_not_contains?: Maybe<String>;
-  time_starts_with?: Maybe<String>;
-  time_not_starts_with?: Maybe<String>;
-  time_ends_with?: Maybe<String>;
-  time_not_ends_with?: Maybe<String>;
+  time?: Maybe<Int>;
+  time_not?: Maybe<Int>;
+  time_in?: Maybe<Int[] | Int>;
+  time_not_in?: Maybe<Int[] | Int>;
+  time_lt?: Maybe<Int>;
+  time_lte?: Maybe<Int>;
+  time_gt?: Maybe<Int>;
+  time_gte?: Maybe<Int>;
   desc?: Maybe<String>;
   desc_not?: Maybe<String>;
   desc_in?: Maybe<String[] | String>;
@@ -635,19 +629,19 @@ export interface ScheduleUpdateManyMutationInput {
 export interface TimeLinkCreateInput {
   id?: Maybe<ID_Input>;
   videoId: String;
-  time: String;
+  time: Int;
   desc: String;
 }
 
 export interface TimeLinkUpdateInput {
   videoId?: Maybe<String>;
-  time?: Maybe<String>;
+  time?: Maybe<Int>;
   desc?: Maybe<String>;
 }
 
 export interface TimeLinkUpdateManyMutationInput {
   videoId?: Maybe<String>;
-  time?: Maybe<String>;
+  time?: Maybe<Int>;
   desc?: Maybe<String>;
 }
 
@@ -878,14 +872,14 @@ export interface AggregateScheduleSubscription
 export interface TimeLink {
   id: ID_Output;
   videoId: String;
-  time: String;
+  time: Int;
   desc: String;
 }
 
 export interface TimeLinkPromise extends Promise<TimeLink>, Fragmentable {
   id: () => Promise<ID_Output>;
   videoId: () => Promise<String>;
-  time: () => Promise<String>;
+  time: () => Promise<Int>;
   desc: () => Promise<String>;
 }
 
@@ -894,7 +888,7 @@ export interface TimeLinkSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   videoId: () => Promise<AsyncIterator<String>>;
-  time: () => Promise<AsyncIterator<String>>;
+  time: () => Promise<AsyncIterator<Int>>;
   desc: () => Promise<AsyncIterator<String>>;
 }
 
@@ -903,7 +897,7 @@ export interface TimeLinkNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   videoId: () => Promise<String>;
-  time: () => Promise<String>;
+  time: () => Promise<Int>;
   desc: () => Promise<String>;
 }
 
@@ -1256,7 +1250,7 @@ export interface TimeLinkSubscriptionPayloadSubscription
 export interface TimeLinkPreviousValues {
   id: ID_Output;
   videoId: String;
-  time: String;
+  time: Int;
   desc: String;
 }
 
@@ -1265,7 +1259,7 @@ export interface TimeLinkPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   videoId: () => Promise<String>;
-  time: () => Promise<String>;
+  time: () => Promise<Int>;
   desc: () => Promise<String>;
 }
 
@@ -1274,7 +1268,7 @@ export interface TimeLinkPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   videoId: () => Promise<AsyncIterator<String>>;
-  time: () => Promise<AsyncIterator<String>>;
+  time: () => Promise<AsyncIterator<Int>>;
   desc: () => Promise<AsyncIterator<String>>;
 }
 

@@ -39,7 +39,7 @@ enum Status {
 type TimeLink {
   id: ID! @id
   videoId:String!
-  time:String!
+  time:Int!
   desc:String!
 }
  

@@ -262,7 +262,7 @@ type Subscription {
 type TimeLink {
   id: ID!
   videoId: String!
-  time: String!
+  time: Int!
   desc: String!
 }
 
@@ -275,7 +275,7 @@ type TimeLinkConnection {
 input TimeLinkCreateInput {
   id: ID
   videoId: String!
-  time: String!
+  time: Int!
   desc: String!
 }
 
@@ -298,7 +298,7 @@ enum TimeLinkOrderByInput {
 type TimeLinkPreviousValues {
   id: ID!
   videoId: String!
-  time: String!
+  time: Int!
   desc: String!
 }
 
@@ -322,13 +322,13 @@ input TimeLinkSubscriptionWhereInput {
 
 input TimeLinkUpdateInput {
   videoId: String
-  time: String
+  time: Int
   desc: String
 }
 
 input TimeLinkUpdateManyMutationInput {
   videoId: String
-  time: String
+  time: Int
   desc: String
 }
 
@@ -361,20 +361,14 @@ input TimeLinkWhereInput {
   videoId_not_starts_with: String
   videoId_ends_with: String
   videoId_not_ends_with: String
-  time: String
-  time_not: String
-  time_in: [String!]
-  time_not_in: [String!]
-  time_lt: String
-  time_lte: String
-  time_gt: String
-  time_gte: String
-  time_contains: String
-  time_not_contains: String
-  time_starts_with: String
-  time_not_starts_with: String
-  time_ends_with: String
-  time_not_ends_with: String
+  time: Int
+  time_not: Int
+  time_in: [Int!]
+  time_not_in: [Int!]
+  time_lt: Int
+  time_lte: Int
+  time_gt: Int
+  time_gte: Int
   desc: String
   desc_not: String
   desc_in: [String!]
