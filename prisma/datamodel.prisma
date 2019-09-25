@@ -18,7 +18,7 @@ type Schedule {
    desc:String!
    thumbnail:String @default(value: "http://image.zdnet.co.kr/2019/06/25/imc_vkCh0ZOG9SNi6oP8.jpg")
    startTime:String!
-
+   endTime:String!
 }
 
 type Video {

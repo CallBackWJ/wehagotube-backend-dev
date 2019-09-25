@@ -19,6 +19,7 @@ type Schedule {
    desc:String
    thumbnail:String
    startTime:String
+   endTime:String
 }
 
 type Video {
