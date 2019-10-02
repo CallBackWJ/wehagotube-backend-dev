@@ -14,29 +14,29 @@ enum TYPE{
 }
 
 type Schedule {
-  id:String!
+   id:String!
    title:String
    desc:String
-   thumbnail:String
+   status:Status
    startTime:String
    endTime:String
 }
 
 type Video {
   id:String!
-  videoId:String!
-  title:String
-  desc:String
+  scheduleId:String! 
+  youtubeId:String! 
   thumbnail:String!
   viewCount:Int!
-  status:Status!
-  createdAt: String!
+  publishedAt: String
 }
 enum Status {
-  PRIVATE
-  PUBLIC
+  RESERVED
+  READY
+  LIVE
+  COMPLETED
+  PUBLISHED
 }
-
 type TimeLink {
   id:String!
   videoId:String!

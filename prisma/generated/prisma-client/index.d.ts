@@ -218,6 +218,8 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type Status = "RESERVED" | "READY" | "LIVE" | "COMPLETED" | "PUBLISHED";
+
 export type ScheduleOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -225,8 +227,8 @@ export type ScheduleOrderByInput =
   | "title_DESC"
   | "desc_ASC"
   | "desc_DESC"
-  | "thumbnail_ASC"
-  | "thumbnail_DESC"
+  | "status_ASC"
+  | "status_DESC"
   | "startTime_ASC"
   | "startTime_DESC"
   | "endTime_ASC"
@@ -258,25 +260,19 @@ export type UserOrderByInput =
   | "permission_ASC"
   | "permission_DESC";
 
-export type Status = "PRIVATE" | "PUBLIC";
-
 export type VideoOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "videoId_ASC"
-  | "videoId_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "desc_ASC"
-  | "desc_DESC"
+  | "scheduleId_ASC"
+  | "scheduleId_DESC"
+  | "youtubeId_ASC"
+  | "youtubeId_DESC"
   | "thumbnail_ASC"
   | "thumbnail_DESC"
   | "viewCount_ASC"
   | "viewCount_DESC"
-  | "status_ASC"
-  | "status_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC";
+  | "publishedAt_ASC"
+  | "publishedAt_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -327,20 +323,10 @@ export interface ScheduleWhereInput {
   desc_not_starts_with?: Maybe<String>;
   desc_ends_with?: Maybe<String>;
   desc_not_ends_with?: Maybe<String>;
-  thumbnail?: Maybe<String>;
-  thumbnail_not?: Maybe<String>;
-  thumbnail_in?: Maybe<String[] | String>;
-  thumbnail_not_in?: Maybe<String[] | String>;
-  thumbnail_lt?: Maybe<String>;
-  thumbnail_lte?: Maybe<String>;
-  thumbnail_gt?: Maybe<String>;
-  thumbnail_gte?: Maybe<String>;
-  thumbnail_contains?: Maybe<String>;
-  thumbnail_not_contains?: Maybe<String>;
-  thumbnail_starts_with?: Maybe<String>;
-  thumbnail_not_starts_with?: Maybe<String>;
-  thumbnail_ends_with?: Maybe<String>;
-  thumbnail_not_ends_with?: Maybe<String>;
+  status?: Maybe<Status>;
+  status_not?: Maybe<Status>;
+  status_in?: Maybe<Status[] | Status>;
+  status_not_in?: Maybe<Status[] | Status>;
   startTime?: Maybe<String>;
   startTime_not?: Maybe<String>;
   startTime_in?: Maybe<String[] | String>;
@@ -521,7 +507,8 @@ export interface UserWhereInput {
 
 export type VideoWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  videoId?: Maybe<String>;
+  scheduleId?: Maybe<String>;
+  youtubeId?: Maybe<String>;
 }>;
 
 export interface VideoWhereInput {
@@ -539,48 +526,34 @@ export interface VideoWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  videoId?: Maybe<String>;
-  videoId_not?: Maybe<String>;
-  videoId_in?: Maybe<String[] | String>;
-  videoId_not_in?: Maybe<String[] | String>;
-  videoId_lt?: Maybe<String>;
-  videoId_lte?: Maybe<String>;
-  videoId_gt?: Maybe<String>;
-  videoId_gte?: Maybe<String>;
-  videoId_contains?: Maybe<String>;
-  videoId_not_contains?: Maybe<String>;
-  videoId_starts_with?: Maybe<String>;
-  videoId_not_starts_with?: Maybe<String>;
-  videoId_ends_with?: Maybe<String>;
-  videoId_not_ends_with?: Maybe<String>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  desc?: Maybe<String>;
-  desc_not?: Maybe<String>;
-  desc_in?: Maybe<String[] | String>;
-  desc_not_in?: Maybe<String[] | String>;
-  desc_lt?: Maybe<String>;
-  desc_lte?: Maybe<String>;
-  desc_gt?: Maybe<String>;
-  desc_gte?: Maybe<String>;
-  desc_contains?: Maybe<String>;
-  desc_not_contains?: Maybe<String>;
-  desc_starts_with?: Maybe<String>;
-  desc_not_starts_with?: Maybe<String>;
-  desc_ends_with?: Maybe<String>;
-  desc_not_ends_with?: Maybe<String>;
+  scheduleId?: Maybe<String>;
+  scheduleId_not?: Maybe<String>;
+  scheduleId_in?: Maybe<String[] | String>;
+  scheduleId_not_in?: Maybe<String[] | String>;
+  scheduleId_lt?: Maybe<String>;
+  scheduleId_lte?: Maybe<String>;
+  scheduleId_gt?: Maybe<String>;
+  scheduleId_gte?: Maybe<String>;
+  scheduleId_contains?: Maybe<String>;
+  scheduleId_not_contains?: Maybe<String>;
+  scheduleId_starts_with?: Maybe<String>;
+  scheduleId_not_starts_with?: Maybe<String>;
+  scheduleId_ends_with?: Maybe<String>;
+  scheduleId_not_ends_with?: Maybe<String>;
+  youtubeId?: Maybe<String>;
+  youtubeId_not?: Maybe<String>;
+  youtubeId_in?: Maybe<String[] | String>;
+  youtubeId_not_in?: Maybe<String[] | String>;
+  youtubeId_lt?: Maybe<String>;
+  youtubeId_lte?: Maybe<String>;
+  youtubeId_gt?: Maybe<String>;
+  youtubeId_gte?: Maybe<String>;
+  youtubeId_contains?: Maybe<String>;
+  youtubeId_not_contains?: Maybe<String>;
+  youtubeId_starts_with?: Maybe<String>;
+  youtubeId_not_starts_with?: Maybe<String>;
+  youtubeId_ends_with?: Maybe<String>;
+  youtubeId_not_ends_with?: Maybe<String>;
   thumbnail?: Maybe<String>;
   thumbnail_not?: Maybe<String>;
   thumbnail_in?: Maybe<String[] | String>;
@@ -603,18 +576,14 @@ export interface VideoWhereInput {
   viewCount_lte?: Maybe<Int>;
   viewCount_gt?: Maybe<Int>;
   viewCount_gte?: Maybe<Int>;
-  status?: Maybe<Status>;
-  status_not?: Maybe<Status>;
-  status_in?: Maybe<Status[] | Status>;
-  status_not_in?: Maybe<Status[] | Status>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
+  publishedAt?: Maybe<DateTimeInput>;
+  publishedAt_not?: Maybe<DateTimeInput>;
+  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_lt?: Maybe<DateTimeInput>;
+  publishedAt_lte?: Maybe<DateTimeInput>;
+  publishedAt_gt?: Maybe<DateTimeInput>;
+  publishedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<VideoWhereInput[] | VideoWhereInput>;
   OR?: Maybe<VideoWhereInput[] | VideoWhereInput>;
   NOT?: Maybe<VideoWhereInput[] | VideoWhereInput>;
@@ -624,7 +593,7 @@ export interface ScheduleCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
   desc: String;
-  thumbnail?: Maybe<String>;
+  status?: Maybe<Status>;
   startTime: String;
   endTime: String;
 }
@@ -632,7 +601,7 @@ export interface ScheduleCreateInput {
 export interface ScheduleUpdateInput {
   title?: Maybe<String>;
   desc?: Maybe<String>;
-  thumbnail?: Maybe<String>;
+  status?: Maybe<Status>;
   startTime?: Maybe<String>;
   endTime?: Maybe<String>;
 }
@@ -640,7 +609,7 @@ export interface ScheduleUpdateInput {
 export interface ScheduleUpdateManyMutationInput {
   title?: Maybe<String>;
   desc?: Maybe<String>;
-  thumbnail?: Maybe<String>;
+  status?: Maybe<Status>;
   startTime?: Maybe<String>;
   endTime?: Maybe<String>;
 }
@@ -691,30 +660,27 @@ export interface UserUpdateManyMutationInput {
 
 export interface VideoCreateInput {
   id?: Maybe<ID_Input>;
-  videoId: String;
-  title?: Maybe<String>;
-  desc?: Maybe<String>;
-  thumbnail: String;
+  scheduleId: String;
+  youtubeId: String;
+  thumbnail?: Maybe<String>;
   viewCount?: Maybe<Int>;
-  status?: Maybe<Status>;
+  publishedAt?: Maybe<DateTimeInput>;
 }
 
 export interface VideoUpdateInput {
-  videoId?: Maybe<String>;
-  title?: Maybe<String>;
-  desc?: Maybe<String>;
+  scheduleId?: Maybe<String>;
+  youtubeId?: Maybe<String>;
   thumbnail?: Maybe<String>;
   viewCount?: Maybe<Int>;
-  status?: Maybe<Status>;
+  publishedAt?: Maybe<DateTimeInput>;
 }
 
 export interface VideoUpdateManyMutationInput {
-  videoId?: Maybe<String>;
-  title?: Maybe<String>;
-  desc?: Maybe<String>;
+  scheduleId?: Maybe<String>;
+  youtubeId?: Maybe<String>;
   thumbnail?: Maybe<String>;
   viewCount?: Maybe<Int>;
-  status?: Maybe<Status>;
+  publishedAt?: Maybe<DateTimeInput>;
 }
 
 export interface ScheduleSubscriptionWhereInput {
@@ -777,7 +743,7 @@ export interface Schedule {
   id: ID_Output;
   title: String;
   desc: String;
-  thumbnail?: String;
+  status: Status;
   startTime: String;
   endTime: String;
 }
@@ -786,7 +752,7 @@ export interface SchedulePromise extends Promise<Schedule>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
-  thumbnail: () => Promise<String>;
+  status: () => Promise<Status>;
   startTime: () => Promise<String>;
   endTime: () => Promise<String>;
 }
@@ -797,7 +763,7 @@ export interface ScheduleSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
-  thumbnail: () => Promise<AsyncIterator<String>>;
+  status: () => Promise<AsyncIterator<Status>>;
   startTime: () => Promise<AsyncIterator<String>>;
   endTime: () => Promise<AsyncIterator<String>>;
 }
@@ -808,7 +774,7 @@ export interface ScheduleNullablePromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
-  thumbnail: () => Promise<String>;
+  status: () => Promise<Status>;
   startTime: () => Promise<String>;
   endTime: () => Promise<String>;
 }
@@ -1076,50 +1042,42 @@ export interface AggregateUserSubscription
 
 export interface Video {
   id: ID_Output;
-  videoId: String;
-  title?: String;
-  desc?: String;
-  thumbnail: String;
+  scheduleId: String;
+  youtubeId: String;
+  thumbnail?: String;
   viewCount: Int;
-  status: Status;
-  createdAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
 }
 
 export interface VideoPromise extends Promise<Video>, Fragmentable {
   id: () => Promise<ID_Output>;
-  videoId: () => Promise<String>;
-  title: () => Promise<String>;
-  desc: () => Promise<String>;
+  scheduleId: () => Promise<String>;
+  youtubeId: () => Promise<String>;
   thumbnail: () => Promise<String>;
   viewCount: () => Promise<Int>;
-  status: () => Promise<Status>;
-  createdAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface VideoSubscription
   extends Promise<AsyncIterator<Video>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  videoId: () => Promise<AsyncIterator<String>>;
-  title: () => Promise<AsyncIterator<String>>;
-  desc: () => Promise<AsyncIterator<String>>;
+  scheduleId: () => Promise<AsyncIterator<String>>;
+  youtubeId: () => Promise<AsyncIterator<String>>;
   thumbnail: () => Promise<AsyncIterator<String>>;
   viewCount: () => Promise<AsyncIterator<Int>>;
-  status: () => Promise<AsyncIterator<Status>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface VideoNullablePromise
   extends Promise<Video | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  videoId: () => Promise<String>;
-  title: () => Promise<String>;
-  desc: () => Promise<String>;
+  scheduleId: () => Promise<String>;
+  youtubeId: () => Promise<String>;
   thumbnail: () => Promise<String>;
   viewCount: () => Promise<Int>;
-  status: () => Promise<Status>;
-  createdAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface VideoConnection {
@@ -1221,7 +1179,7 @@ export interface SchedulePreviousValues {
   id: ID_Output;
   title: String;
   desc: String;
-  thumbnail?: String;
+  status: Status;
   startTime: String;
   endTime: String;
 }
@@ -1232,7 +1190,7 @@ export interface SchedulePreviousValuesPromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
-  thumbnail: () => Promise<String>;
+  status: () => Promise<Status>;
   startTime: () => Promise<String>;
   endTime: () => Promise<String>;
 }
@@ -1243,7 +1201,7 @@ export interface SchedulePreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
-  thumbnail: () => Promise<AsyncIterator<String>>;
+  status: () => Promise<AsyncIterator<Status>>;
   startTime: () => Promise<AsyncIterator<String>>;
   endTime: () => Promise<AsyncIterator<String>>;
 }
@@ -1381,39 +1339,33 @@ export interface VideoSubscriptionPayloadSubscription
 
 export interface VideoPreviousValues {
   id: ID_Output;
-  videoId: String;
-  title?: String;
-  desc?: String;
-  thumbnail: String;
+  scheduleId: String;
+  youtubeId: String;
+  thumbnail?: String;
   viewCount: Int;
-  status: Status;
-  createdAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
 }
 
 export interface VideoPreviousValuesPromise
   extends Promise<VideoPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  videoId: () => Promise<String>;
-  title: () => Promise<String>;
-  desc: () => Promise<String>;
+  scheduleId: () => Promise<String>;
+  youtubeId: () => Promise<String>;
   thumbnail: () => Promise<String>;
   viewCount: () => Promise<Int>;
-  status: () => Promise<Status>;
-  createdAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface VideoPreviousValuesSubscription
   extends Promise<AsyncIterator<VideoPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  videoId: () => Promise<AsyncIterator<String>>;
-  title: () => Promise<AsyncIterator<String>>;
-  desc: () => Promise<AsyncIterator<String>>;
+  scheduleId: () => Promise<AsyncIterator<String>>;
+  youtubeId: () => Promise<AsyncIterator<String>>;
   thumbnail: () => Promise<AsyncIterator<String>>;
   viewCount: () => Promise<AsyncIterator<Int>>;
-  status: () => Promise<AsyncIterator<Status>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 /*

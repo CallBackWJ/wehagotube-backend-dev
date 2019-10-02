@@ -91,7 +91,7 @@ type Schedule {
   id: ID!
   title: String!
   desc: String!
-  thumbnail: String
+  status: Status!
   startTime: String!
   endTime: String!
 }
@@ -106,7 +106,7 @@ input ScheduleCreateInput {
   id: ID
   title: String!
   desc: String!
-  thumbnail: String
+  status: Status
   startTime: String!
   endTime: String!
 }
@@ -123,8 +123,8 @@ enum ScheduleOrderByInput {
   title_DESC
   desc_ASC
   desc_DESC
-  thumbnail_ASC
-  thumbnail_DESC
+  status_ASC
+  status_DESC
   startTime_ASC
   startTime_DESC
   endTime_ASC
@@ -135,7 +135,7 @@ type SchedulePreviousValues {
   id: ID!
   title: String!
   desc: String!
-  thumbnail: String
+  status: Status!
   startTime: String!
   endTime: String!
 }
@@ -161,7 +161,7 @@ input ScheduleSubscriptionWhereInput {
 input ScheduleUpdateInput {
   title: String
   desc: String
-  thumbnail: String
+  status: Status
   startTime: String
   endTime: String
 }
@@ -169,7 +169,7 @@ input ScheduleUpdateInput {
 input ScheduleUpdateManyMutationInput {
   title: String
   desc: String
-  thumbnail: String
+  status: Status
   startTime: String
   endTime: String
 }
@@ -217,20 +217,10 @@ input ScheduleWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
-  thumbnail: String
-  thumbnail_not: String
-  thumbnail_in: [String!]
-  thumbnail_not_in: [String!]
-  thumbnail_lt: String
-  thumbnail_lte: String
-  thumbnail_gt: String
-  thumbnail_gte: String
-  thumbnail_contains: String
-  thumbnail_not_contains: String
-  thumbnail_starts_with: String
-  thumbnail_not_starts_with: String
-  thumbnail_ends_with: String
-  thumbnail_not_ends_with: String
+  status: Status
+  status_not: Status
+  status_in: [Status!]
+  status_not_in: [Status!]
   startTime: String
   startTime_not: String
   startTime_in: [String!]
@@ -269,8 +259,11 @@ input ScheduleWhereUniqueInput {
 }
 
 enum Status {
-  PRIVATE
-  PUBLIC
+  RESERVED
+  READY
+  LIVE
+  COMPLETED
+  PUBLISHED
 }
 
 type Subscription {
@@ -592,13 +585,11 @@ input UserWhereUniqueInput {
 
 type Video {
   id: ID!
-  videoId: String!
-  title: String
-  desc: String
-  thumbnail: String!
+  scheduleId: String!
+  youtubeId: String!
+  thumbnail: String
   viewCount: Int!
-  status: Status!
-  createdAt: DateTime!
+  publishedAt: DateTime
 }
 
 type VideoConnection {
@@ -609,12 +600,11 @@ type VideoConnection {
 
 input VideoCreateInput {
   id: ID
-  videoId: String!
-  title: String
-  desc: String
-  thumbnail: String!
+  scheduleId: String!
+  youtubeId: String!
+  thumbnail: String
   viewCount: Int
-  status: Status
+  publishedAt: DateTime
 }
 
 type VideoEdge {
@@ -625,31 +615,25 @@ type VideoEdge {
 enum VideoOrderByInput {
   id_ASC
   id_DESC
-  videoId_ASC
-  videoId_DESC
-  title_ASC
-  title_DESC
-  desc_ASC
-  desc_DESC
+  scheduleId_ASC
+  scheduleId_DESC
+  youtubeId_ASC
+  youtubeId_DESC
   thumbnail_ASC
   thumbnail_DESC
   viewCount_ASC
   viewCount_DESC
-  status_ASC
-  status_DESC
-  createdAt_ASC
-  createdAt_DESC
+  publishedAt_ASC
+  publishedAt_DESC
 }
 
 type VideoPreviousValues {
   id: ID!
-  videoId: String!
-  title: String
-  desc: String
-  thumbnail: String!
+  scheduleId: String!
+  youtubeId: String!
+  thumbnail: String
   viewCount: Int!
-  status: Status!
-  createdAt: DateTime!
+  publishedAt: DateTime
 }
 
 type VideoSubscriptionPayload {
@@ -671,21 +655,19 @@ input VideoSubscriptionWhereInput {
 }
 
 input VideoUpdateInput {
-  videoId: String
-  title: String
-  desc: String
+  scheduleId: String
+  youtubeId: String
   thumbnail: String
   viewCount: Int
-  status: Status
+  publishedAt: DateTime
 }
 
 input VideoUpdateManyMutationInput {
-  videoId: String
-  title: String
-  desc: String
+  scheduleId: String
+  youtubeId: String
   thumbnail: String
   viewCount: Int
-  status: Status
+  publishedAt: DateTime
 }
 
 input VideoWhereInput {
@@ -703,48 +685,34 @@ input VideoWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  videoId: String
-  videoId_not: String
-  videoId_in: [String!]
-  videoId_not_in: [String!]
-  videoId_lt: String
-  videoId_lte: String
-  videoId_gt: String
-  videoId_gte: String
-  videoId_contains: String
-  videoId_not_contains: String
-  videoId_starts_with: String
-  videoId_not_starts_with: String
-  videoId_ends_with: String
-  videoId_not_ends_with: String
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  desc: String
-  desc_not: String
-  desc_in: [String!]
-  desc_not_in: [String!]
-  desc_lt: String
-  desc_lte: String
-  desc_gt: String
-  desc_gte: String
-  desc_contains: String
-  desc_not_contains: String
-  desc_starts_with: String
-  desc_not_starts_with: String
-  desc_ends_with: String
-  desc_not_ends_with: String
+  scheduleId: String
+  scheduleId_not: String
+  scheduleId_in: [String!]
+  scheduleId_not_in: [String!]
+  scheduleId_lt: String
+  scheduleId_lte: String
+  scheduleId_gt: String
+  scheduleId_gte: String
+  scheduleId_contains: String
+  scheduleId_not_contains: String
+  scheduleId_starts_with: String
+  scheduleId_not_starts_with: String
+  scheduleId_ends_with: String
+  scheduleId_not_ends_with: String
+  youtubeId: String
+  youtubeId_not: String
+  youtubeId_in: [String!]
+  youtubeId_not_in: [String!]
+  youtubeId_lt: String
+  youtubeId_lte: String
+  youtubeId_gt: String
+  youtubeId_gte: String
+  youtubeId_contains: String
+  youtubeId_not_contains: String
+  youtubeId_starts_with: String
+  youtubeId_not_starts_with: String
+  youtubeId_ends_with: String
+  youtubeId_not_ends_with: String
   thumbnail: String
   thumbnail_not: String
   thumbnail_in: [String!]
@@ -767,18 +735,14 @@ input VideoWhereInput {
   viewCount_lte: Int
   viewCount_gt: Int
   viewCount_gte: Int
-  status: Status
-  status_not: Status
-  status_in: [Status!]
-  status_not_in: [Status!]
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
   AND: [VideoWhereInput!]
   OR: [VideoWhereInput!]
   NOT: [VideoWhereInput!]
@@ -786,7 +750,8 @@ input VideoWhereInput {
 
 input VideoWhereUniqueInput {
   id: ID
-  videoId: String
+  scheduleId: String
+  youtubeId: String
 }
 `
       }

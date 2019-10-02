@@ -6,40 +6,44 @@ type User {
   accessToken: String
   permission: TYPE!
 }
-
 enum TYPE{
   ADMIN
   USER
 }
 
+
+
 type Schedule {
    id: ID! @id
    title:String!
    desc:String!
-   thumbnail:String @default(value: "http://image.zdnet.co.kr/2019/06/25/imc_vkCh0ZOG9SNi6oP8.jpg")
+   status:Status! @default(value: RESERVED)
    startTime:String!
    endTime:String!
+
+
+
 }
 
 type Video {
   id: ID! @id
-  videoId:String! @unique
-  title:String
-  desc:String
-  thumbnail:String!
+  scheduleId:String! @unique
+  youtubeId:String! @unique
+  thumbnail:String @default(value: "http://image.zdnet.co.kr/2019/06/25/imc_vkCh0ZOG9SNi6oP8.jpg")
   viewCount:Int! @default(value: 0)
-  status:Status! @default(value: PRIVATE)
-  createdAt: DateTime! @createdAt
+  publishedAt: DateTime!
 }
 enum Status {
-  PRIVATE
-  PUBLIC
+  RESERVED
+  READY
+  LIVE
+  COMPLETED
+  PUBLISHED
 }
 
-type TimeLink {
+ type TimeLink {
   id: ID! @id
   videoId:String!
   time:Int!
   desc:String!
 }
- 
