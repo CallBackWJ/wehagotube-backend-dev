@@ -17,15 +17,19 @@ var models = [
     embedded: false
   },
   {
-    name: "Video",
-    embedded: false
-  },
-  {
     name: "Status",
     embedded: false
   },
   {
+    name: "Video",
+    embedded: false
+  },
+  {
     name: "TimeLink",
+    embedded: false
+  },
+  {
+    name: "Chat",
     embedded: false
   }
 ];

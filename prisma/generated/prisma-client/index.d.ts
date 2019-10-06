@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  chat: (where?: ChatWhereInput) => Promise<boolean>;
   schedule: (where?: ScheduleWhereInput) => Promise<boolean>;
   timeLink: (where?: TimeLinkWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -41,6 +42,25 @@ export interface Prisma {
    * Queries
    */
 
+  chat: (where: ChatWhereUniqueInput) => ChatNullablePromise;
+  chats: (args?: {
+    where?: ChatWhereInput;
+    orderBy?: ChatOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Chat>;
+  chatsConnection: (args?: {
+    where?: ChatWhereInput;
+    orderBy?: ChatOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ChatConnectionPromise;
   schedule: (where: ScheduleWhereUniqueInput) => ScheduleNullablePromise;
   schedules: (args?: {
     where?: ScheduleWhereInput;
@@ -123,6 +143,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createChat: (data: ChatCreateInput) => ChatPromise;
+  updateChat: (args: {
+    data: ChatUpdateInput;
+    where: ChatWhereUniqueInput;
+  }) => ChatPromise;
+  updateManyChats: (args: {
+    data: ChatUpdateManyMutationInput;
+    where?: ChatWhereInput;
+  }) => BatchPayloadPromise;
+  upsertChat: (args: {
+    where: ChatWhereUniqueInput;
+    create: ChatCreateInput;
+    update: ChatUpdateInput;
+  }) => ChatPromise;
+  deleteChat: (where: ChatWhereUniqueInput) => ChatPromise;
+  deleteManyChats: (where?: ChatWhereInput) => BatchPayloadPromise;
   createSchedule: (data: ScheduleCreateInput) => SchedulePromise;
   updateSchedule: (args: {
     data: ScheduleUpdateInput;
@@ -196,6 +232,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  chat: (
+    where?: ChatSubscriptionWhereInput
+  ) => ChatSubscriptionPayloadSubscription;
   schedule: (
     where?: ScheduleSubscriptionWhereInput
   ) => ScheduleSubscriptionPayloadSubscription;
@@ -218,7 +257,25 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type TYPE = "ADMIN" | "USER";
+
 export type Status = "RESERVED" | "READY" | "LIVE" | "COMPLETED" | "PUBLISHED";
+
+export type ChatOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC";
+
+export type TimeLinkOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "seek_ASC"
+  | "seek_DESC"
+  | "desc_ASC"
+  | "desc_DESC";
 
 export type ScheduleOrderByInput =
   | "id_ASC"
@@ -227,24 +284,12 @@ export type ScheduleOrderByInput =
   | "title_DESC"
   | "desc_ASC"
   | "desc_DESC"
-  | "status_ASC"
-  | "status_DESC"
   | "startTime_ASC"
   | "startTime_DESC"
   | "endTime_ASC"
-  | "endTime_DESC";
-
-export type TimeLinkOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "videoId_ASC"
-  | "videoId_DESC"
-  | "time_ASC"
-  | "time_DESC"
-  | "desc_ASC"
-  | "desc_DESC";
-
-export type TYPE = "ADMIN" | "USER";
+  | "endTime_DESC"
+  | "status_ASC"
+  | "status_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -263,24 +308,22 @@ export type UserOrderByInput =
 export type VideoOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "scheduleId_ASC"
-  | "scheduleId_DESC"
   | "youtubeId_ASC"
   | "youtubeId_DESC"
-  | "thumbnail_ASC"
-  | "thumbnail_DESC"
   | "viewCount_ASC"
   | "viewCount_DESC"
-  | "publishedAt_ASC"
-  | "publishedAt_DESC";
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "thumbnail_ASC"
+  | "thumbnail_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ScheduleWhereUniqueInput = AtLeastOne<{
+export type ChatWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ScheduleWhereInput {
+export interface ChatWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -295,135 +338,34 @@ export interface ScheduleWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  desc?: Maybe<String>;
-  desc_not?: Maybe<String>;
-  desc_in?: Maybe<String[] | String>;
-  desc_not_in?: Maybe<String[] | String>;
-  desc_lt?: Maybe<String>;
-  desc_lte?: Maybe<String>;
-  desc_gt?: Maybe<String>;
-  desc_gte?: Maybe<String>;
-  desc_contains?: Maybe<String>;
-  desc_not_contains?: Maybe<String>;
-  desc_starts_with?: Maybe<String>;
-  desc_not_starts_with?: Maybe<String>;
-  desc_ends_with?: Maybe<String>;
-  desc_not_ends_with?: Maybe<String>;
-  status?: Maybe<Status>;
-  status_not?: Maybe<Status>;
-  status_in?: Maybe<Status[] | Status>;
-  status_not_in?: Maybe<Status[] | Status>;
-  startTime?: Maybe<String>;
-  startTime_not?: Maybe<String>;
-  startTime_in?: Maybe<String[] | String>;
-  startTime_not_in?: Maybe<String[] | String>;
-  startTime_lt?: Maybe<String>;
-  startTime_lte?: Maybe<String>;
-  startTime_gt?: Maybe<String>;
-  startTime_gte?: Maybe<String>;
-  startTime_contains?: Maybe<String>;
-  startTime_not_contains?: Maybe<String>;
-  startTime_starts_with?: Maybe<String>;
-  startTime_not_starts_with?: Maybe<String>;
-  startTime_ends_with?: Maybe<String>;
-  startTime_not_ends_with?: Maybe<String>;
-  endTime?: Maybe<String>;
-  endTime_not?: Maybe<String>;
-  endTime_in?: Maybe<String[] | String>;
-  endTime_not_in?: Maybe<String[] | String>;
-  endTime_lt?: Maybe<String>;
-  endTime_lte?: Maybe<String>;
-  endTime_gt?: Maybe<String>;
-  endTime_gte?: Maybe<String>;
-  endTime_contains?: Maybe<String>;
-  endTime_not_contains?: Maybe<String>;
-  endTime_starts_with?: Maybe<String>;
-  endTime_not_starts_with?: Maybe<String>;
-  endTime_ends_with?: Maybe<String>;
-  endTime_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
-  OR?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
-  NOT?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  from?: Maybe<UserWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  video?: Maybe<VideoWhereInput>;
+  AND?: Maybe<ChatWhereInput[] | ChatWhereInput>;
+  OR?: Maybe<ChatWhereInput[] | ChatWhereInput>;
+  NOT?: Maybe<ChatWhereInput[] | ChatWhereInput>;
 }
-
-export type TimeLinkWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface TimeLinkWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  videoId?: Maybe<String>;
-  videoId_not?: Maybe<String>;
-  videoId_in?: Maybe<String[] | String>;
-  videoId_not_in?: Maybe<String[] | String>;
-  videoId_lt?: Maybe<String>;
-  videoId_lte?: Maybe<String>;
-  videoId_gt?: Maybe<String>;
-  videoId_gte?: Maybe<String>;
-  videoId_contains?: Maybe<String>;
-  videoId_not_contains?: Maybe<String>;
-  videoId_starts_with?: Maybe<String>;
-  videoId_not_starts_with?: Maybe<String>;
-  videoId_ends_with?: Maybe<String>;
-  videoId_not_ends_with?: Maybe<String>;
-  time?: Maybe<Int>;
-  time_not?: Maybe<Int>;
-  time_in?: Maybe<Int[] | Int>;
-  time_not_in?: Maybe<Int[] | Int>;
-  time_lt?: Maybe<Int>;
-  time_lte?: Maybe<Int>;
-  time_gt?: Maybe<Int>;
-  time_gte?: Maybe<Int>;
-  desc?: Maybe<String>;
-  desc_not?: Maybe<String>;
-  desc_in?: Maybe<String[] | String>;
-  desc_not_in?: Maybe<String[] | String>;
-  desc_lt?: Maybe<String>;
-  desc_lte?: Maybe<String>;
-  desc_gt?: Maybe<String>;
-  desc_gte?: Maybe<String>;
-  desc_contains?: Maybe<String>;
-  desc_not_contains?: Maybe<String>;
-  desc_starts_with?: Maybe<String>;
-  desc_not_starts_with?: Maybe<String>;
-  desc_ends_with?: Maybe<String>;
-  desc_not_ends_with?: Maybe<String>;
-  AND?: Maybe<TimeLinkWhereInput[] | TimeLinkWhereInput>;
-  OR?: Maybe<TimeLinkWhereInput[] | TimeLinkWhereInput>;
-  NOT?: Maybe<TimeLinkWhereInput[] | TimeLinkWhereInput>;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
 
 export interface UserWhereInput {
   id?: Maybe<ID_Input>;
@@ -505,12 +447,6 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export type VideoWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  scheduleId?: Maybe<String>;
-  youtubeId?: Maybe<String>;
-}>;
-
 export interface VideoWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
@@ -526,20 +462,6 @@ export interface VideoWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  scheduleId?: Maybe<String>;
-  scheduleId_not?: Maybe<String>;
-  scheduleId_in?: Maybe<String[] | String>;
-  scheduleId_not_in?: Maybe<String[] | String>;
-  scheduleId_lt?: Maybe<String>;
-  scheduleId_lte?: Maybe<String>;
-  scheduleId_gt?: Maybe<String>;
-  scheduleId_gte?: Maybe<String>;
-  scheduleId_contains?: Maybe<String>;
-  scheduleId_not_contains?: Maybe<String>;
-  scheduleId_starts_with?: Maybe<String>;
-  scheduleId_not_starts_with?: Maybe<String>;
-  scheduleId_ends_with?: Maybe<String>;
-  scheduleId_not_ends_with?: Maybe<String>;
   youtubeId?: Maybe<String>;
   youtubeId_not?: Maybe<String>;
   youtubeId_in?: Maybe<String[] | String>;
@@ -554,6 +476,22 @@ export interface VideoWhereInput {
   youtubeId_not_starts_with?: Maybe<String>;
   youtubeId_ends_with?: Maybe<String>;
   youtubeId_not_ends_with?: Maybe<String>;
+  viewCount?: Maybe<Int>;
+  viewCount_not?: Maybe<Int>;
+  viewCount_in?: Maybe<Int[] | Int>;
+  viewCount_not_in?: Maybe<Int[] | Int>;
+  viewCount_lt?: Maybe<Int>;
+  viewCount_lte?: Maybe<Int>;
+  viewCount_gt?: Maybe<Int>;
+  viewCount_gte?: Maybe<Int>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
   thumbnail?: Maybe<String>;
   thumbnail_not?: Maybe<String>;
   thumbnail_in?: Maybe<String[] | String>;
@@ -568,69 +506,157 @@ export interface VideoWhereInput {
   thumbnail_not_starts_with?: Maybe<String>;
   thumbnail_ends_with?: Maybe<String>;
   thumbnail_not_ends_with?: Maybe<String>;
-  viewCount?: Maybe<Int>;
-  viewCount_not?: Maybe<Int>;
-  viewCount_in?: Maybe<Int[] | Int>;
-  viewCount_not_in?: Maybe<Int[] | Int>;
-  viewCount_lt?: Maybe<Int>;
-  viewCount_lte?: Maybe<Int>;
-  viewCount_gt?: Maybe<Int>;
-  viewCount_gte?: Maybe<Int>;
-  publishedAt?: Maybe<DateTimeInput>;
-  publishedAt_not?: Maybe<DateTimeInput>;
-  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_lt?: Maybe<DateTimeInput>;
-  publishedAt_lte?: Maybe<DateTimeInput>;
-  publishedAt_gt?: Maybe<DateTimeInput>;
-  publishedAt_gte?: Maybe<DateTimeInput>;
+  schedule?: Maybe<ScheduleWhereInput>;
+  chats_every?: Maybe<ChatWhereInput>;
+  chats_some?: Maybe<ChatWhereInput>;
+  chats_none?: Maybe<ChatWhereInput>;
+  timeLinks_every?: Maybe<TimeLinkWhereInput>;
+  timeLinks_some?: Maybe<TimeLinkWhereInput>;
+  timeLinks_none?: Maybe<TimeLinkWhereInput>;
   AND?: Maybe<VideoWhereInput[] | VideoWhereInput>;
   OR?: Maybe<VideoWhereInput[] | VideoWhereInput>;
   NOT?: Maybe<VideoWhereInput[] | VideoWhereInput>;
 }
 
-export interface ScheduleCreateInput {
+export interface ScheduleWhereInput {
   id?: Maybe<ID_Input>;
-  title: String;
-  desc: String;
-  status?: Maybe<Status>;
-  startTime: String;
-  endTime: String;
-}
-
-export interface ScheduleUpdateInput {
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
   title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   desc?: Maybe<String>;
+  desc_not?: Maybe<String>;
+  desc_in?: Maybe<String[] | String>;
+  desc_not_in?: Maybe<String[] | String>;
+  desc_lt?: Maybe<String>;
+  desc_lte?: Maybe<String>;
+  desc_gt?: Maybe<String>;
+  desc_gte?: Maybe<String>;
+  desc_contains?: Maybe<String>;
+  desc_not_contains?: Maybe<String>;
+  desc_starts_with?: Maybe<String>;
+  desc_not_starts_with?: Maybe<String>;
+  desc_ends_with?: Maybe<String>;
+  desc_not_ends_with?: Maybe<String>;
+  startTime?: Maybe<DateTimeInput>;
+  startTime_not?: Maybe<DateTimeInput>;
+  startTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startTime_lt?: Maybe<DateTimeInput>;
+  startTime_lte?: Maybe<DateTimeInput>;
+  startTime_gt?: Maybe<DateTimeInput>;
+  startTime_gte?: Maybe<DateTimeInput>;
+  endTime?: Maybe<DateTimeInput>;
+  endTime_not?: Maybe<DateTimeInput>;
+  endTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endTime_lt?: Maybe<DateTimeInput>;
+  endTime_lte?: Maybe<DateTimeInput>;
+  endTime_gt?: Maybe<DateTimeInput>;
+  endTime_gte?: Maybe<DateTimeInput>;
   status?: Maybe<Status>;
-  startTime?: Maybe<String>;
-  endTime?: Maybe<String>;
+  status_not?: Maybe<Status>;
+  status_in?: Maybe<Status[] | Status>;
+  status_not_in?: Maybe<Status[] | Status>;
+  AND?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  OR?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  NOT?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
 }
 
-export interface ScheduleUpdateManyMutationInput {
-  title?: Maybe<String>;
-  desc?: Maybe<String>;
-  status?: Maybe<Status>;
-  startTime?: Maybe<String>;
-  endTime?: Maybe<String>;
-}
-
-export interface TimeLinkCreateInput {
+export interface TimeLinkWhereInput {
   id?: Maybe<ID_Input>;
-  videoId: String;
-  time: Int;
-  desc: String;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  seek?: Maybe<Int>;
+  seek_not?: Maybe<Int>;
+  seek_in?: Maybe<Int[] | Int>;
+  seek_not_in?: Maybe<Int[] | Int>;
+  seek_lt?: Maybe<Int>;
+  seek_lte?: Maybe<Int>;
+  seek_gt?: Maybe<Int>;
+  seek_gte?: Maybe<Int>;
+  desc?: Maybe<String>;
+  desc_not?: Maybe<String>;
+  desc_in?: Maybe<String[] | String>;
+  desc_not_in?: Maybe<String[] | String>;
+  desc_lt?: Maybe<String>;
+  desc_lte?: Maybe<String>;
+  desc_gt?: Maybe<String>;
+  desc_gte?: Maybe<String>;
+  desc_contains?: Maybe<String>;
+  desc_not_contains?: Maybe<String>;
+  desc_starts_with?: Maybe<String>;
+  desc_not_starts_with?: Maybe<String>;
+  desc_ends_with?: Maybe<String>;
+  desc_not_ends_with?: Maybe<String>;
+  video?: Maybe<VideoWhereInput>;
+  AND?: Maybe<TimeLinkWhereInput[] | TimeLinkWhereInput>;
+  OR?: Maybe<TimeLinkWhereInput[] | TimeLinkWhereInput>;
+  NOT?: Maybe<TimeLinkWhereInput[] | TimeLinkWhereInput>;
 }
 
-export interface TimeLinkUpdateInput {
-  videoId?: Maybe<String>;
-  time?: Maybe<Int>;
-  desc?: Maybe<String>;
+export type ScheduleWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type TimeLinkWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
+export type VideoWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  youtubeId?: Maybe<String>;
+}>;
+
+export interface ChatCreateInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  from: UserCreateOneInput;
+  video: VideoCreateOneWithoutChatsInput;
 }
 
-export interface TimeLinkUpdateManyMutationInput {
-  videoId?: Maybe<String>;
-  time?: Maybe<Int>;
-  desc?: Maybe<String>;
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface UserCreateInput {
@@ -640,6 +666,374 @@ export interface UserCreateInput {
   avatar?: Maybe<String>;
   accessToken?: Maybe<String>;
   permission: TYPE;
+}
+
+export interface VideoCreateOneWithoutChatsInput {
+  create?: Maybe<VideoCreateWithoutChatsInput>;
+  connect?: Maybe<VideoWhereUniqueInput>;
+}
+
+export interface VideoCreateWithoutChatsInput {
+  id?: Maybe<ID_Input>;
+  youtubeId: String;
+  viewCount?: Maybe<Int>;
+  thumbnail?: Maybe<String>;
+  schedule: ScheduleCreateOneInput;
+  timeLinks?: Maybe<TimeLinkCreateManyWithoutVideoInput>;
+}
+
+export interface ScheduleCreateOneInput {
+  create?: Maybe<ScheduleCreateInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleCreateInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  desc: String;
+  startTime: DateTimeInput;
+  endTime: DateTimeInput;
+  status?: Maybe<Status>;
+}
+
+export interface TimeLinkCreateManyWithoutVideoInput {
+  create?: Maybe<
+    TimeLinkCreateWithoutVideoInput[] | TimeLinkCreateWithoutVideoInput
+  >;
+  connect?: Maybe<TimeLinkWhereUniqueInput[] | TimeLinkWhereUniqueInput>;
+}
+
+export interface TimeLinkCreateWithoutVideoInput {
+  id?: Maybe<ID_Input>;
+  seek: Int;
+  desc: String;
+}
+
+export interface ChatUpdateInput {
+  text?: Maybe<String>;
+  from?: Maybe<UserUpdateOneRequiredInput>;
+  video?: Maybe<VideoUpdateOneRequiredWithoutChatsInput>;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
+  email?: Maybe<String>;
+  name?: Maybe<String>;
+  avatar?: Maybe<String>;
+  accessToken?: Maybe<String>;
+  permission?: Maybe<TYPE>;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface VideoUpdateOneRequiredWithoutChatsInput {
+  create?: Maybe<VideoCreateWithoutChatsInput>;
+  update?: Maybe<VideoUpdateWithoutChatsDataInput>;
+  upsert?: Maybe<VideoUpsertWithoutChatsInput>;
+  connect?: Maybe<VideoWhereUniqueInput>;
+}
+
+export interface VideoUpdateWithoutChatsDataInput {
+  youtubeId?: Maybe<String>;
+  viewCount?: Maybe<Int>;
+  thumbnail?: Maybe<String>;
+  schedule?: Maybe<ScheduleUpdateOneRequiredInput>;
+  timeLinks?: Maybe<TimeLinkUpdateManyWithoutVideoInput>;
+}
+
+export interface ScheduleUpdateOneRequiredInput {
+  create?: Maybe<ScheduleCreateInput>;
+  update?: Maybe<ScheduleUpdateDataInput>;
+  upsert?: Maybe<ScheduleUpsertNestedInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleUpdateDataInput {
+  title?: Maybe<String>;
+  desc?: Maybe<String>;
+  startTime?: Maybe<DateTimeInput>;
+  endTime?: Maybe<DateTimeInput>;
+  status?: Maybe<Status>;
+}
+
+export interface ScheduleUpsertNestedInput {
+  update: ScheduleUpdateDataInput;
+  create: ScheduleCreateInput;
+}
+
+export interface TimeLinkUpdateManyWithoutVideoInput {
+  create?: Maybe<
+    TimeLinkCreateWithoutVideoInput[] | TimeLinkCreateWithoutVideoInput
+  >;
+  delete?: Maybe<TimeLinkWhereUniqueInput[] | TimeLinkWhereUniqueInput>;
+  connect?: Maybe<TimeLinkWhereUniqueInput[] | TimeLinkWhereUniqueInput>;
+  set?: Maybe<TimeLinkWhereUniqueInput[] | TimeLinkWhereUniqueInput>;
+  disconnect?: Maybe<TimeLinkWhereUniqueInput[] | TimeLinkWhereUniqueInput>;
+  update?: Maybe<
+    | TimeLinkUpdateWithWhereUniqueWithoutVideoInput[]
+    | TimeLinkUpdateWithWhereUniqueWithoutVideoInput
+  >;
+  upsert?: Maybe<
+    | TimeLinkUpsertWithWhereUniqueWithoutVideoInput[]
+    | TimeLinkUpsertWithWhereUniqueWithoutVideoInput
+  >;
+  deleteMany?: Maybe<TimeLinkScalarWhereInput[] | TimeLinkScalarWhereInput>;
+  updateMany?: Maybe<
+    | TimeLinkUpdateManyWithWhereNestedInput[]
+    | TimeLinkUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface TimeLinkUpdateWithWhereUniqueWithoutVideoInput {
+  where: TimeLinkWhereUniqueInput;
+  data: TimeLinkUpdateWithoutVideoDataInput;
+}
+
+export interface TimeLinkUpdateWithoutVideoDataInput {
+  seek?: Maybe<Int>;
+  desc?: Maybe<String>;
+}
+
+export interface TimeLinkUpsertWithWhereUniqueWithoutVideoInput {
+  where: TimeLinkWhereUniqueInput;
+  update: TimeLinkUpdateWithoutVideoDataInput;
+  create: TimeLinkCreateWithoutVideoInput;
+}
+
+export interface TimeLinkScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  seek?: Maybe<Int>;
+  seek_not?: Maybe<Int>;
+  seek_in?: Maybe<Int[] | Int>;
+  seek_not_in?: Maybe<Int[] | Int>;
+  seek_lt?: Maybe<Int>;
+  seek_lte?: Maybe<Int>;
+  seek_gt?: Maybe<Int>;
+  seek_gte?: Maybe<Int>;
+  desc?: Maybe<String>;
+  desc_not?: Maybe<String>;
+  desc_in?: Maybe<String[] | String>;
+  desc_not_in?: Maybe<String[] | String>;
+  desc_lt?: Maybe<String>;
+  desc_lte?: Maybe<String>;
+  desc_gt?: Maybe<String>;
+  desc_gte?: Maybe<String>;
+  desc_contains?: Maybe<String>;
+  desc_not_contains?: Maybe<String>;
+  desc_starts_with?: Maybe<String>;
+  desc_not_starts_with?: Maybe<String>;
+  desc_ends_with?: Maybe<String>;
+  desc_not_ends_with?: Maybe<String>;
+  AND?: Maybe<TimeLinkScalarWhereInput[] | TimeLinkScalarWhereInput>;
+  OR?: Maybe<TimeLinkScalarWhereInput[] | TimeLinkScalarWhereInput>;
+  NOT?: Maybe<TimeLinkScalarWhereInput[] | TimeLinkScalarWhereInput>;
+}
+
+export interface TimeLinkUpdateManyWithWhereNestedInput {
+  where: TimeLinkScalarWhereInput;
+  data: TimeLinkUpdateManyDataInput;
+}
+
+export interface TimeLinkUpdateManyDataInput {
+  seek?: Maybe<Int>;
+  desc?: Maybe<String>;
+}
+
+export interface VideoUpsertWithoutChatsInput {
+  update: VideoUpdateWithoutChatsDataInput;
+  create: VideoCreateWithoutChatsInput;
+}
+
+export interface ChatUpdateManyMutationInput {
+  text?: Maybe<String>;
+}
+
+export interface ScheduleUpdateInput {
+  title?: Maybe<String>;
+  desc?: Maybe<String>;
+  startTime?: Maybe<DateTimeInput>;
+  endTime?: Maybe<DateTimeInput>;
+  status?: Maybe<Status>;
+}
+
+export interface ScheduleUpdateManyMutationInput {
+  title?: Maybe<String>;
+  desc?: Maybe<String>;
+  startTime?: Maybe<DateTimeInput>;
+  endTime?: Maybe<DateTimeInput>;
+  status?: Maybe<Status>;
+}
+
+export interface TimeLinkCreateInput {
+  id?: Maybe<ID_Input>;
+  seek: Int;
+  desc: String;
+  video: VideoCreateOneWithoutTimeLinksInput;
+}
+
+export interface VideoCreateOneWithoutTimeLinksInput {
+  create?: Maybe<VideoCreateWithoutTimeLinksInput>;
+  connect?: Maybe<VideoWhereUniqueInput>;
+}
+
+export interface VideoCreateWithoutTimeLinksInput {
+  id?: Maybe<ID_Input>;
+  youtubeId: String;
+  viewCount?: Maybe<Int>;
+  thumbnail?: Maybe<String>;
+  schedule: ScheduleCreateOneInput;
+  chats?: Maybe<ChatCreateManyWithoutVideoInput>;
+}
+
+export interface ChatCreateManyWithoutVideoInput {
+  create?: Maybe<ChatCreateWithoutVideoInput[] | ChatCreateWithoutVideoInput>;
+  connect?: Maybe<ChatWhereUniqueInput[] | ChatWhereUniqueInput>;
+}
+
+export interface ChatCreateWithoutVideoInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  from: UserCreateOneInput;
+}
+
+export interface TimeLinkUpdateInput {
+  seek?: Maybe<Int>;
+  desc?: Maybe<String>;
+  video?: Maybe<VideoUpdateOneRequiredWithoutTimeLinksInput>;
+}
+
+export interface VideoUpdateOneRequiredWithoutTimeLinksInput {
+  create?: Maybe<VideoCreateWithoutTimeLinksInput>;
+  update?: Maybe<VideoUpdateWithoutTimeLinksDataInput>;
+  upsert?: Maybe<VideoUpsertWithoutTimeLinksInput>;
+  connect?: Maybe<VideoWhereUniqueInput>;
+}
+
+export interface VideoUpdateWithoutTimeLinksDataInput {
+  youtubeId?: Maybe<String>;
+  viewCount?: Maybe<Int>;
+  thumbnail?: Maybe<String>;
+  schedule?: Maybe<ScheduleUpdateOneRequiredInput>;
+  chats?: Maybe<ChatUpdateManyWithoutVideoInput>;
+}
+
+export interface ChatUpdateManyWithoutVideoInput {
+  create?: Maybe<ChatCreateWithoutVideoInput[] | ChatCreateWithoutVideoInput>;
+  delete?: Maybe<ChatWhereUniqueInput[] | ChatWhereUniqueInput>;
+  connect?: Maybe<ChatWhereUniqueInput[] | ChatWhereUniqueInput>;
+  set?: Maybe<ChatWhereUniqueInput[] | ChatWhereUniqueInput>;
+  disconnect?: Maybe<ChatWhereUniqueInput[] | ChatWhereUniqueInput>;
+  update?: Maybe<
+    | ChatUpdateWithWhereUniqueWithoutVideoInput[]
+    | ChatUpdateWithWhereUniqueWithoutVideoInput
+  >;
+  upsert?: Maybe<
+    | ChatUpsertWithWhereUniqueWithoutVideoInput[]
+    | ChatUpsertWithWhereUniqueWithoutVideoInput
+  >;
+  deleteMany?: Maybe<ChatScalarWhereInput[] | ChatScalarWhereInput>;
+  updateMany?: Maybe<
+    ChatUpdateManyWithWhereNestedInput[] | ChatUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ChatUpdateWithWhereUniqueWithoutVideoInput {
+  where: ChatWhereUniqueInput;
+  data: ChatUpdateWithoutVideoDataInput;
+}
+
+export interface ChatUpdateWithoutVideoDataInput {
+  text?: Maybe<String>;
+  from?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface ChatUpsertWithWhereUniqueWithoutVideoInput {
+  where: ChatWhereUniqueInput;
+  update: ChatUpdateWithoutVideoDataInput;
+  create: ChatCreateWithoutVideoInput;
+}
+
+export interface ChatScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ChatScalarWhereInput[] | ChatScalarWhereInput>;
+  OR?: Maybe<ChatScalarWhereInput[] | ChatScalarWhereInput>;
+  NOT?: Maybe<ChatScalarWhereInput[] | ChatScalarWhereInput>;
+}
+
+export interface ChatUpdateManyWithWhereNestedInput {
+  where: ChatScalarWhereInput;
+  data: ChatUpdateManyDataInput;
+}
+
+export interface ChatUpdateManyDataInput {
+  text?: Maybe<String>;
+}
+
+export interface VideoUpsertWithoutTimeLinksInput {
+  update: VideoUpdateWithoutTimeLinksDataInput;
+  create: VideoCreateWithoutTimeLinksInput;
+}
+
+export interface TimeLinkUpdateManyMutationInput {
+  seek?: Maybe<Int>;
+  desc?: Maybe<String>;
 }
 
 export interface UserUpdateInput {
@@ -660,27 +1054,38 @@ export interface UserUpdateManyMutationInput {
 
 export interface VideoCreateInput {
   id?: Maybe<ID_Input>;
-  scheduleId: String;
   youtubeId: String;
-  thumbnail?: Maybe<String>;
   viewCount?: Maybe<Int>;
-  publishedAt?: Maybe<DateTimeInput>;
+  thumbnail?: Maybe<String>;
+  schedule: ScheduleCreateOneInput;
+  chats?: Maybe<ChatCreateManyWithoutVideoInput>;
+  timeLinks?: Maybe<TimeLinkCreateManyWithoutVideoInput>;
 }
 
 export interface VideoUpdateInput {
-  scheduleId?: Maybe<String>;
   youtubeId?: Maybe<String>;
-  thumbnail?: Maybe<String>;
   viewCount?: Maybe<Int>;
-  publishedAt?: Maybe<DateTimeInput>;
+  thumbnail?: Maybe<String>;
+  schedule?: Maybe<ScheduleUpdateOneRequiredInput>;
+  chats?: Maybe<ChatUpdateManyWithoutVideoInput>;
+  timeLinks?: Maybe<TimeLinkUpdateManyWithoutVideoInput>;
 }
 
 export interface VideoUpdateManyMutationInput {
-  scheduleId?: Maybe<String>;
   youtubeId?: Maybe<String>;
-  thumbnail?: Maybe<String>;
   viewCount?: Maybe<Int>;
-  publishedAt?: Maybe<DateTimeInput>;
+  thumbnail?: Maybe<String>;
+}
+
+export interface ChatSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ChatWhereInput>;
+  AND?: Maybe<ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput>;
+  OR?: Maybe<ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput>;
+  NOT?: Maybe<ChatSubscriptionWhereInput[] | ChatSubscriptionWhereInput>;
 }
 
 export interface ScheduleSubscriptionWhereInput {
@@ -739,22 +1144,189 @@ export interface NodeNode {
   id: ID_Output;
 }
 
+export interface Chat {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface ChatPromise extends Promise<Chat>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  from: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  video: <T = VideoPromise>() => T;
+}
+
+export interface ChatSubscription
+  extends Promise<AsyncIterator<Chat>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  from: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  video: <T = VideoSubscription>() => T;
+}
+
+export interface ChatNullablePromise
+  extends Promise<Chat | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  from: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  video: <T = VideoPromise>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  name: String;
+  avatar?: String;
+  accessToken?: String;
+  permission: TYPE;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  avatar: () => Promise<String>;
+  accessToken: () => Promise<String>;
+  permission: () => Promise<TYPE>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  avatar: () => Promise<AsyncIterator<String>>;
+  accessToken: () => Promise<AsyncIterator<String>>;
+  permission: () => Promise<AsyncIterator<TYPE>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  name: () => Promise<String>;
+  avatar: () => Promise<String>;
+  accessToken: () => Promise<String>;
+  permission: () => Promise<TYPE>;
+}
+
+export interface Video {
+  id: ID_Output;
+  youtubeId: String;
+  viewCount: Int;
+  createdAt: DateTimeOutput;
+  thumbnail?: String;
+}
+
+export interface VideoPromise extends Promise<Video>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  youtubeId: () => Promise<String>;
+  viewCount: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  thumbnail: () => Promise<String>;
+  schedule: <T = SchedulePromise>() => T;
+  chats: <T = FragmentableArray<Chat>>(args?: {
+    where?: ChatWhereInput;
+    orderBy?: ChatOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  timeLinks: <T = FragmentableArray<TimeLink>>(args?: {
+    where?: TimeLinkWhereInput;
+    orderBy?: TimeLinkOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoSubscription
+  extends Promise<AsyncIterator<Video>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  youtubeId: () => Promise<AsyncIterator<String>>;
+  viewCount: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  thumbnail: () => Promise<AsyncIterator<String>>;
+  schedule: <T = ScheduleSubscription>() => T;
+  chats: <T = Promise<AsyncIterator<ChatSubscription>>>(args?: {
+    where?: ChatWhereInput;
+    orderBy?: ChatOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  timeLinks: <T = Promise<AsyncIterator<TimeLinkSubscription>>>(args?: {
+    where?: TimeLinkWhereInput;
+    orderBy?: TimeLinkOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoNullablePromise
+  extends Promise<Video | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  youtubeId: () => Promise<String>;
+  viewCount: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  thumbnail: () => Promise<String>;
+  schedule: <T = SchedulePromise>() => T;
+  chats: <T = FragmentableArray<Chat>>(args?: {
+    where?: ChatWhereInput;
+    orderBy?: ChatOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  timeLinks: <T = FragmentableArray<TimeLink>>(args?: {
+    where?: TimeLinkWhereInput;
+    orderBy?: TimeLinkOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
 export interface Schedule {
   id: ID_Output;
   title: String;
   desc: String;
+  startTime: DateTimeOutput;
+  endTime: DateTimeOutput;
   status: Status;
-  startTime: String;
-  endTime: String;
 }
 
 export interface SchedulePromise extends Promise<Schedule>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
+  startTime: () => Promise<DateTimeOutput>;
+  endTime: () => Promise<DateTimeOutput>;
   status: () => Promise<Status>;
-  startTime: () => Promise<String>;
-  endTime: () => Promise<String>;
 }
 
 export interface ScheduleSubscription
@@ -763,9 +1335,9 @@ export interface ScheduleSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
+  startTime: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endTime: () => Promise<AsyncIterator<DateTimeOutput>>;
   status: () => Promise<AsyncIterator<Status>>;
-  startTime: () => Promise<AsyncIterator<String>>;
-  endTime: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ScheduleNullablePromise
@@ -774,30 +1346,61 @@ export interface ScheduleNullablePromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
+  startTime: () => Promise<DateTimeOutput>;
+  endTime: () => Promise<DateTimeOutput>;
   status: () => Promise<Status>;
-  startTime: () => Promise<String>;
-  endTime: () => Promise<String>;
 }
 
-export interface ScheduleConnection {
+export interface TimeLink {
+  id: ID_Output;
+  seek: Int;
+  desc: String;
+}
+
+export interface TimeLinkPromise extends Promise<TimeLink>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  seek: () => Promise<Int>;
+  desc: () => Promise<String>;
+  video: <T = VideoPromise>() => T;
+}
+
+export interface TimeLinkSubscription
+  extends Promise<AsyncIterator<TimeLink>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  seek: () => Promise<AsyncIterator<Int>>;
+  desc: () => Promise<AsyncIterator<String>>;
+  video: <T = VideoSubscription>() => T;
+}
+
+export interface TimeLinkNullablePromise
+  extends Promise<TimeLink | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  seek: () => Promise<Int>;
+  desc: () => Promise<String>;
+  video: <T = VideoPromise>() => T;
+}
+
+export interface ChatConnection {
   pageInfo: PageInfo;
-  edges: ScheduleEdge[];
+  edges: ChatEdge[];
 }
 
-export interface ScheduleConnectionPromise
-  extends Promise<ScheduleConnection>,
+export interface ChatConnectionPromise
+  extends Promise<ChatConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ScheduleEdge>>() => T;
-  aggregate: <T = AggregateSchedulePromise>() => T;
+  edges: <T = FragmentableArray<ChatEdge>>() => T;
+  aggregate: <T = AggregateChatPromise>() => T;
 }
 
-export interface ScheduleConnectionSubscription
-  extends Promise<AsyncIterator<ScheduleConnection>>,
+export interface ChatConnectionSubscription
+  extends Promise<AsyncIterator<ChatConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ScheduleEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateScheduleSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ChatEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateChatSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -821,6 +1424,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ChatEdge {
+  node: Chat;
+  cursor: String;
+}
+
+export interface ChatEdgePromise extends Promise<ChatEdge>, Fragmentable {
+  node: <T = ChatPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ChatEdgeSubscription
+  extends Promise<AsyncIterator<ChatEdge>>,
+    Fragmentable {
+  node: <T = ChatSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateChat {
+  count: Int;
+}
+
+export interface AggregateChatPromise
+  extends Promise<AggregateChat>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChatSubscription
+  extends Promise<AsyncIterator<AggregateChat>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ScheduleConnection {
+  pageInfo: PageInfo;
+  edges: ScheduleEdge[];
+}
+
+export interface ScheduleConnectionPromise
+  extends Promise<ScheduleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ScheduleEdge>>() => T;
+  aggregate: <T = AggregateSchedulePromise>() => T;
+}
+
+export interface ScheduleConnectionSubscription
+  extends Promise<AsyncIterator<ScheduleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ScheduleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateScheduleSubscription>() => T;
 }
 
 export interface ScheduleEdge {
@@ -856,38 +1513,6 @@ export interface AggregateScheduleSubscription
   extends Promise<AsyncIterator<AggregateSchedule>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface TimeLink {
-  id: ID_Output;
-  videoId: String;
-  time: Int;
-  desc: String;
-}
-
-export interface TimeLinkPromise extends Promise<TimeLink>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  videoId: () => Promise<String>;
-  time: () => Promise<Int>;
-  desc: () => Promise<String>;
-}
-
-export interface TimeLinkSubscription
-  extends Promise<AsyncIterator<TimeLink>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  videoId: () => Promise<AsyncIterator<String>>;
-  time: () => Promise<AsyncIterator<Int>>;
-  desc: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TimeLinkNullablePromise
-  extends Promise<TimeLink | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  videoId: () => Promise<String>;
-  time: () => Promise<Int>;
-  desc: () => Promise<String>;
 }
 
 export interface TimeLinkConnection {
@@ -946,46 +1571,6 @@ export interface AggregateTimeLinkSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface User {
-  id: ID_Output;
-  email: String;
-  name: String;
-  avatar?: String;
-  accessToken?: String;
-  permission: TYPE;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-  avatar: () => Promise<String>;
-  accessToken: () => Promise<String>;
-  permission: () => Promise<TYPE>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  avatar: () => Promise<AsyncIterator<String>>;
-  accessToken: () => Promise<AsyncIterator<String>>;
-  permission: () => Promise<AsyncIterator<TYPE>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  name: () => Promise<String>;
-  avatar: () => Promise<String>;
-  accessToken: () => Promise<String>;
-  permission: () => Promise<TYPE>;
-}
-
 export interface UserConnection {
   pageInfo: PageInfo;
   edges: UserEdge[];
@@ -1038,46 +1623,6 @@ export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Video {
-  id: ID_Output;
-  scheduleId: String;
-  youtubeId: String;
-  thumbnail?: String;
-  viewCount: Int;
-  publishedAt?: DateTimeOutput;
-}
-
-export interface VideoPromise extends Promise<Video>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  scheduleId: () => Promise<String>;
-  youtubeId: () => Promise<String>;
-  thumbnail: () => Promise<String>;
-  viewCount: () => Promise<Int>;
-  publishedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface VideoSubscription
-  extends Promise<AsyncIterator<Video>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  scheduleId: () => Promise<AsyncIterator<String>>;
-  youtubeId: () => Promise<AsyncIterator<String>>;
-  thumbnail: () => Promise<AsyncIterator<String>>;
-  viewCount: () => Promise<AsyncIterator<Int>>;
-  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface VideoNullablePromise
-  extends Promise<Video | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  scheduleId: () => Promise<String>;
-  youtubeId: () => Promise<String>;
-  thumbnail: () => Promise<String>;
-  viewCount: () => Promise<Int>;
-  publishedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface VideoConnection {
@@ -1150,6 +1695,53 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface ChatSubscriptionPayload {
+  mutation: MutationType;
+  node: Chat;
+  updatedFields: String[];
+  previousValues: ChatPreviousValues;
+}
+
+export interface ChatSubscriptionPayloadPromise
+  extends Promise<ChatSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ChatPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ChatPreviousValuesPromise>() => T;
+}
+
+export interface ChatSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ChatSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ChatSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ChatPreviousValuesSubscription>() => T;
+}
+
+export interface ChatPreviousValues {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+}
+
+export interface ChatPreviousValuesPromise
+  extends Promise<ChatPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ChatPreviousValuesSubscription
+  extends Promise<AsyncIterator<ChatPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface ScheduleSubscriptionPayload {
   mutation: MutationType;
   node: Schedule;
@@ -1179,9 +1771,9 @@ export interface SchedulePreviousValues {
   id: ID_Output;
   title: String;
   desc: String;
+  startTime: DateTimeOutput;
+  endTime: DateTimeOutput;
   status: Status;
-  startTime: String;
-  endTime: String;
 }
 
 export interface SchedulePreviousValuesPromise
@@ -1190,9 +1782,9 @@ export interface SchedulePreviousValuesPromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
+  startTime: () => Promise<DateTimeOutput>;
+  endTime: () => Promise<DateTimeOutput>;
   status: () => Promise<Status>;
-  startTime: () => Promise<String>;
-  endTime: () => Promise<String>;
 }
 
 export interface SchedulePreviousValuesSubscription
@@ -1201,9 +1793,9 @@ export interface SchedulePreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
+  startTime: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endTime: () => Promise<AsyncIterator<DateTimeOutput>>;
   status: () => Promise<AsyncIterator<Status>>;
-  startTime: () => Promise<AsyncIterator<String>>;
-  endTime: () => Promise<AsyncIterator<String>>;
 }
 
 export interface TimeLinkSubscriptionPayload {
@@ -1233,8 +1825,7 @@ export interface TimeLinkSubscriptionPayloadSubscription
 
 export interface TimeLinkPreviousValues {
   id: ID_Output;
-  videoId: String;
-  time: Int;
+  seek: Int;
   desc: String;
 }
 
@@ -1242,8 +1833,7 @@ export interface TimeLinkPreviousValuesPromise
   extends Promise<TimeLinkPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  videoId: () => Promise<String>;
-  time: () => Promise<Int>;
+  seek: () => Promise<Int>;
   desc: () => Promise<String>;
 }
 
@@ -1251,8 +1841,7 @@ export interface TimeLinkPreviousValuesSubscription
   extends Promise<AsyncIterator<TimeLinkPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  videoId: () => Promise<AsyncIterator<String>>;
-  time: () => Promise<AsyncIterator<Int>>;
+  seek: () => Promise<AsyncIterator<Int>>;
   desc: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1339,33 +1928,30 @@ export interface VideoSubscriptionPayloadSubscription
 
 export interface VideoPreviousValues {
   id: ID_Output;
-  scheduleId: String;
   youtubeId: String;
-  thumbnail?: String;
   viewCount: Int;
-  publishedAt?: DateTimeOutput;
+  createdAt: DateTimeOutput;
+  thumbnail?: String;
 }
 
 export interface VideoPreviousValuesPromise
   extends Promise<VideoPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  scheduleId: () => Promise<String>;
   youtubeId: () => Promise<String>;
-  thumbnail: () => Promise<String>;
   viewCount: () => Promise<Int>;
-  publishedAt: () => Promise<DateTimeOutput>;
+  createdAt: () => Promise<DateTimeOutput>;
+  thumbnail: () => Promise<String>;
 }
 
 export interface VideoPreviousValuesSubscription
   extends Promise<AsyncIterator<VideoPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  scheduleId: () => Promise<AsyncIterator<String>>;
   youtubeId: () => Promise<AsyncIterator<String>>;
-  thumbnail: () => Promise<AsyncIterator<String>>;
   viewCount: () => Promise<AsyncIterator<Int>>;
-  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  thumbnail: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -1380,16 +1966,6 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -1398,6 +1974,16 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 export type Long = string;
 
@@ -1419,15 +2005,19 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Video",
-    embedded: false
-  },
-  {
     name: "Status",
     embedded: false
   },
   {
+    name: "Video",
+    embedded: false
+  },
+  {
     name: "TimeLink",
+    embedded: false
+  },
+  {
+    name: "Chat",
     embedded: false
   }
 ];

@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateSchedule {
+/* GraphQL */ `type AggregateChat {
+  count: Int!
+}
+
+type AggregateSchedule {
   count: Int!
 }
 
@@ -23,11 +27,224 @@ type BatchPayload {
   count: Long!
 }
 
+type Chat {
+  id: ID!
+  text: String!
+  from: User!
+  createdAt: DateTime!
+  video: Video!
+}
+
+type ChatConnection {
+  pageInfo: PageInfo!
+  edges: [ChatEdge]!
+  aggregate: AggregateChat!
+}
+
+input ChatCreateInput {
+  id: ID
+  text: String!
+  from: UserCreateOneInput!
+  video: VideoCreateOneWithoutChatsInput!
+}
+
+input ChatCreateManyWithoutVideoInput {
+  create: [ChatCreateWithoutVideoInput!]
+  connect: [ChatWhereUniqueInput!]
+}
+
+input ChatCreateWithoutVideoInput {
+  id: ID
+  text: String!
+  from: UserCreateOneInput!
+}
+
+type ChatEdge {
+  node: Chat!
+  cursor: String!
+}
+
+enum ChatOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ChatPreviousValues {
+  id: ID!
+  text: String!
+  createdAt: DateTime!
+}
+
+input ChatScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [ChatScalarWhereInput!]
+  OR: [ChatScalarWhereInput!]
+  NOT: [ChatScalarWhereInput!]
+}
+
+type ChatSubscriptionPayload {
+  mutation: MutationType!
+  node: Chat
+  updatedFields: [String!]
+  previousValues: ChatPreviousValues
+}
+
+input ChatSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ChatWhereInput
+  AND: [ChatSubscriptionWhereInput!]
+  OR: [ChatSubscriptionWhereInput!]
+  NOT: [ChatSubscriptionWhereInput!]
+}
+
+input ChatUpdateInput {
+  text: String
+  from: UserUpdateOneRequiredInput
+  video: VideoUpdateOneRequiredWithoutChatsInput
+}
+
+input ChatUpdateManyDataInput {
+  text: String
+}
+
+input ChatUpdateManyMutationInput {
+  text: String
+}
+
+input ChatUpdateManyWithoutVideoInput {
+  create: [ChatCreateWithoutVideoInput!]
+  delete: [ChatWhereUniqueInput!]
+  connect: [ChatWhereUniqueInput!]
+  set: [ChatWhereUniqueInput!]
+  disconnect: [ChatWhereUniqueInput!]
+  update: [ChatUpdateWithWhereUniqueWithoutVideoInput!]
+  upsert: [ChatUpsertWithWhereUniqueWithoutVideoInput!]
+  deleteMany: [ChatScalarWhereInput!]
+  updateMany: [ChatUpdateManyWithWhereNestedInput!]
+}
+
+input ChatUpdateManyWithWhereNestedInput {
+  where: ChatScalarWhereInput!
+  data: ChatUpdateManyDataInput!
+}
+
+input ChatUpdateWithoutVideoDataInput {
+  text: String
+  from: UserUpdateOneRequiredInput
+}
+
+input ChatUpdateWithWhereUniqueWithoutVideoInput {
+  where: ChatWhereUniqueInput!
+  data: ChatUpdateWithoutVideoDataInput!
+}
+
+input ChatUpsertWithWhereUniqueWithoutVideoInput {
+  where: ChatWhereUniqueInput!
+  update: ChatUpdateWithoutVideoDataInput!
+  create: ChatCreateWithoutVideoInput!
+}
+
+input ChatWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  from: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  video: VideoWhereInput
+  AND: [ChatWhereInput!]
+  OR: [ChatWhereInput!]
+  NOT: [ChatWhereInput!]
+}
+
+input ChatWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
 
 scalar Long
 
 type Mutation {
+  createChat(data: ChatCreateInput!): Chat!
+  updateChat(data: ChatUpdateInput!, where: ChatWhereUniqueInput!): Chat
+  updateManyChats(data: ChatUpdateManyMutationInput!, where: ChatWhereInput): BatchPayload!
+  upsertChat(where: ChatWhereUniqueInput!, create: ChatCreateInput!, update: ChatUpdateInput!): Chat!
+  deleteChat(where: ChatWhereUniqueInput!): Chat
+  deleteManyChats(where: ChatWhereInput): BatchPayload!
   createSchedule(data: ScheduleCreateInput!): Schedule!
   updateSchedule(data: ScheduleUpdateInput!, where: ScheduleWhereUniqueInput!): Schedule
   updateManySchedules(data: ScheduleUpdateManyMutationInput!, where: ScheduleWhereInput): BatchPayload!
@@ -72,6 +289,9 @@ type PageInfo {
 }
 
 type Query {
+  chat(where: ChatWhereUniqueInput!): Chat
+  chats(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Chat]!
+  chatsConnection(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChatConnection!
   schedule(where: ScheduleWhereUniqueInput!): Schedule
   schedules(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Schedule]!
   schedulesConnection(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ScheduleConnection!
@@ -91,9 +311,9 @@ type Schedule {
   id: ID!
   title: String!
   desc: String!
+  startTime: DateTime!
+  endTime: DateTime!
   status: Status!
-  startTime: String!
-  endTime: String!
 }
 
 type ScheduleConnection {
@@ -106,9 +326,14 @@ input ScheduleCreateInput {
   id: ID
   title: String!
   desc: String!
+  startTime: DateTime!
+  endTime: DateTime!
   status: Status
-  startTime: String!
-  endTime: String!
+}
+
+input ScheduleCreateOneInput {
+  create: ScheduleCreateInput
+  connect: ScheduleWhereUniqueInput
 }
 
 type ScheduleEdge {
@@ -123,21 +348,21 @@ enum ScheduleOrderByInput {
   title_DESC
   desc_ASC
   desc_DESC
-  status_ASC
-  status_DESC
   startTime_ASC
   startTime_DESC
   endTime_ASC
   endTime_DESC
+  status_ASC
+  status_DESC
 }
 
 type SchedulePreviousValues {
   id: ID!
   title: String!
   desc: String!
+  startTime: DateTime!
+  endTime: DateTime!
   status: Status!
-  startTime: String!
-  endTime: String!
 }
 
 type ScheduleSubscriptionPayload {
@@ -158,20 +383,40 @@ input ScheduleSubscriptionWhereInput {
   NOT: [ScheduleSubscriptionWhereInput!]
 }
 
+input ScheduleUpdateDataInput {
+  title: String
+  desc: String
+  startTime: DateTime
+  endTime: DateTime
+  status: Status
+}
+
 input ScheduleUpdateInput {
   title: String
   desc: String
+  startTime: DateTime
+  endTime: DateTime
   status: Status
-  startTime: String
-  endTime: String
 }
 
 input ScheduleUpdateManyMutationInput {
   title: String
   desc: String
+  startTime: DateTime
+  endTime: DateTime
   status: Status
-  startTime: String
-  endTime: String
+}
+
+input ScheduleUpdateOneRequiredInput {
+  create: ScheduleCreateInput
+  update: ScheduleUpdateDataInput
+  upsert: ScheduleUpsertNestedInput
+  connect: ScheduleWhereUniqueInput
+}
+
+input ScheduleUpsertNestedInput {
+  update: ScheduleUpdateDataInput!
+  create: ScheduleCreateInput!
 }
 
 input ScheduleWhereInput {
@@ -217,38 +462,26 @@ input ScheduleWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
+  startTime: DateTime
+  startTime_not: DateTime
+  startTime_in: [DateTime!]
+  startTime_not_in: [DateTime!]
+  startTime_lt: DateTime
+  startTime_lte: DateTime
+  startTime_gt: DateTime
+  startTime_gte: DateTime
+  endTime: DateTime
+  endTime_not: DateTime
+  endTime_in: [DateTime!]
+  endTime_not_in: [DateTime!]
+  endTime_lt: DateTime
+  endTime_lte: DateTime
+  endTime_gt: DateTime
+  endTime_gte: DateTime
   status: Status
   status_not: Status
   status_in: [Status!]
   status_not_in: [Status!]
-  startTime: String
-  startTime_not: String
-  startTime_in: [String!]
-  startTime_not_in: [String!]
-  startTime_lt: String
-  startTime_lte: String
-  startTime_gt: String
-  startTime_gte: String
-  startTime_contains: String
-  startTime_not_contains: String
-  startTime_starts_with: String
-  startTime_not_starts_with: String
-  startTime_ends_with: String
-  startTime_not_ends_with: String
-  endTime: String
-  endTime_not: String
-  endTime_in: [String!]
-  endTime_not_in: [String!]
-  endTime_lt: String
-  endTime_lte: String
-  endTime_gt: String
-  endTime_gte: String
-  endTime_contains: String
-  endTime_not_contains: String
-  endTime_starts_with: String
-  endTime_not_starts_with: String
-  endTime_ends_with: String
-  endTime_not_ends_with: String
   AND: [ScheduleWhereInput!]
   OR: [ScheduleWhereInput!]
   NOT: [ScheduleWhereInput!]
@@ -267,6 +500,7 @@ enum Status {
 }
 
 type Subscription {
+  chat(where: ChatSubscriptionWhereInput): ChatSubscriptionPayload
   schedule(where: ScheduleSubscriptionWhereInput): ScheduleSubscriptionPayload
   timeLink(where: TimeLinkSubscriptionWhereInput): TimeLinkSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -275,9 +509,9 @@ type Subscription {
 
 type TimeLink {
   id: ID!
-  videoId: String!
-  time: Int!
+  seek: Int!
   desc: String!
+  video: Video!
 }
 
 type TimeLinkConnection {
@@ -288,8 +522,19 @@ type TimeLinkConnection {
 
 input TimeLinkCreateInput {
   id: ID
-  videoId: String!
-  time: Int!
+  seek: Int!
+  desc: String!
+  video: VideoCreateOneWithoutTimeLinksInput!
+}
+
+input TimeLinkCreateManyWithoutVideoInput {
+  create: [TimeLinkCreateWithoutVideoInput!]
+  connect: [TimeLinkWhereUniqueInput!]
+}
+
+input TimeLinkCreateWithoutVideoInput {
+  id: ID
+  seek: Int!
   desc: String!
 }
 
@@ -301,19 +546,58 @@ type TimeLinkEdge {
 enum TimeLinkOrderByInput {
   id_ASC
   id_DESC
-  videoId_ASC
-  videoId_DESC
-  time_ASC
-  time_DESC
+  seek_ASC
+  seek_DESC
   desc_ASC
   desc_DESC
 }
 
 type TimeLinkPreviousValues {
   id: ID!
-  videoId: String!
-  time: Int!
+  seek: Int!
   desc: String!
+}
+
+input TimeLinkScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  seek: Int
+  seek_not: Int
+  seek_in: [Int!]
+  seek_not_in: [Int!]
+  seek_lt: Int
+  seek_lte: Int
+  seek_gt: Int
+  seek_gte: Int
+  desc: String
+  desc_not: String
+  desc_in: [String!]
+  desc_not_in: [String!]
+  desc_lt: String
+  desc_lte: String
+  desc_gt: String
+  desc_gte: String
+  desc_contains: String
+  desc_not_contains: String
+  desc_starts_with: String
+  desc_not_starts_with: String
+  desc_ends_with: String
+  desc_not_ends_with: String
+  AND: [TimeLinkScalarWhereInput!]
+  OR: [TimeLinkScalarWhereInput!]
+  NOT: [TimeLinkScalarWhereInput!]
 }
 
 type TimeLinkSubscriptionPayload {
@@ -335,15 +619,52 @@ input TimeLinkSubscriptionWhereInput {
 }
 
 input TimeLinkUpdateInput {
-  videoId: String
-  time: Int
+  seek: Int
+  desc: String
+  video: VideoUpdateOneRequiredWithoutTimeLinksInput
+}
+
+input TimeLinkUpdateManyDataInput {
+  seek: Int
   desc: String
 }
 
 input TimeLinkUpdateManyMutationInput {
-  videoId: String
-  time: Int
+  seek: Int
   desc: String
+}
+
+input TimeLinkUpdateManyWithoutVideoInput {
+  create: [TimeLinkCreateWithoutVideoInput!]
+  delete: [TimeLinkWhereUniqueInput!]
+  connect: [TimeLinkWhereUniqueInput!]
+  set: [TimeLinkWhereUniqueInput!]
+  disconnect: [TimeLinkWhereUniqueInput!]
+  update: [TimeLinkUpdateWithWhereUniqueWithoutVideoInput!]
+  upsert: [TimeLinkUpsertWithWhereUniqueWithoutVideoInput!]
+  deleteMany: [TimeLinkScalarWhereInput!]
+  updateMany: [TimeLinkUpdateManyWithWhereNestedInput!]
+}
+
+input TimeLinkUpdateManyWithWhereNestedInput {
+  where: TimeLinkScalarWhereInput!
+  data: TimeLinkUpdateManyDataInput!
+}
+
+input TimeLinkUpdateWithoutVideoDataInput {
+  seek: Int
+  desc: String
+}
+
+input TimeLinkUpdateWithWhereUniqueWithoutVideoInput {
+  where: TimeLinkWhereUniqueInput!
+  data: TimeLinkUpdateWithoutVideoDataInput!
+}
+
+input TimeLinkUpsertWithWhereUniqueWithoutVideoInput {
+  where: TimeLinkWhereUniqueInput!
+  update: TimeLinkUpdateWithoutVideoDataInput!
+  create: TimeLinkCreateWithoutVideoInput!
 }
 
 input TimeLinkWhereInput {
@@ -361,28 +682,14 @@ input TimeLinkWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  videoId: String
-  videoId_not: String
-  videoId_in: [String!]
-  videoId_not_in: [String!]
-  videoId_lt: String
-  videoId_lte: String
-  videoId_gt: String
-  videoId_gte: String
-  videoId_contains: String
-  videoId_not_contains: String
-  videoId_starts_with: String
-  videoId_not_starts_with: String
-  videoId_ends_with: String
-  videoId_not_ends_with: String
-  time: Int
-  time_not: Int
-  time_in: [Int!]
-  time_not_in: [Int!]
-  time_lt: Int
-  time_lte: Int
-  time_gt: Int
-  time_gte: Int
+  seek: Int
+  seek_not: Int
+  seek_in: [Int!]
+  seek_not_in: [Int!]
+  seek_lt: Int
+  seek_lte: Int
+  seek_gt: Int
+  seek_gte: Int
   desc: String
   desc_not: String
   desc_in: [String!]
@@ -397,6 +704,7 @@ input TimeLinkWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
+  video: VideoWhereInput
   AND: [TimeLinkWhereInput!]
   OR: [TimeLinkWhereInput!]
   NOT: [TimeLinkWhereInput!]
@@ -433,6 +741,11 @@ input UserCreateInput {
   avatar: String
   accessToken: String
   permission: TYPE!
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 type UserEdge {
@@ -482,6 +795,14 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  email: String
+  name: String
+  avatar: String
+  accessToken: String
+  permission: TYPE
+}
+
 input UserUpdateInput {
   email: String
   name: String
@@ -496,6 +817,18 @@ input UserUpdateManyMutationInput {
   avatar: String
   accessToken: String
   permission: TYPE
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -585,11 +918,13 @@ input UserWhereUniqueInput {
 
 type Video {
   id: ID!
-  scheduleId: String!
   youtubeId: String!
-  thumbnail: String
   viewCount: Int!
-  publishedAt: DateTime
+  createdAt: DateTime!
+  thumbnail: String
+  schedule: Schedule!
+  chats(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Chat!]
+  timeLinks(where: TimeLinkWhereInput, orderBy: TimeLinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TimeLink!]
 }
 
 type VideoConnection {
@@ -600,11 +935,40 @@ type VideoConnection {
 
 input VideoCreateInput {
   id: ID
-  scheduleId: String!
   youtubeId: String!
-  thumbnail: String
   viewCount: Int
-  publishedAt: DateTime
+  thumbnail: String
+  schedule: ScheduleCreateOneInput!
+  chats: ChatCreateManyWithoutVideoInput
+  timeLinks: TimeLinkCreateManyWithoutVideoInput
+}
+
+input VideoCreateOneWithoutChatsInput {
+  create: VideoCreateWithoutChatsInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoCreateOneWithoutTimeLinksInput {
+  create: VideoCreateWithoutTimeLinksInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoCreateWithoutChatsInput {
+  id: ID
+  youtubeId: String!
+  viewCount: Int
+  thumbnail: String
+  schedule: ScheduleCreateOneInput!
+  timeLinks: TimeLinkCreateManyWithoutVideoInput
+}
+
+input VideoCreateWithoutTimeLinksInput {
+  id: ID
+  youtubeId: String!
+  viewCount: Int
+  thumbnail: String
+  schedule: ScheduleCreateOneInput!
+  chats: ChatCreateManyWithoutVideoInput
 }
 
 type VideoEdge {
@@ -615,25 +979,22 @@ type VideoEdge {
 enum VideoOrderByInput {
   id_ASC
   id_DESC
-  scheduleId_ASC
-  scheduleId_DESC
   youtubeId_ASC
   youtubeId_DESC
-  thumbnail_ASC
-  thumbnail_DESC
   viewCount_ASC
   viewCount_DESC
-  publishedAt_ASC
-  publishedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+  thumbnail_ASC
+  thumbnail_DESC
 }
 
 type VideoPreviousValues {
   id: ID!
-  scheduleId: String!
   youtubeId: String!
-  thumbnail: String
   viewCount: Int!
-  publishedAt: DateTime
+  createdAt: DateTime!
+  thumbnail: String
 }
 
 type VideoSubscriptionPayload {
@@ -655,19 +1016,58 @@ input VideoSubscriptionWhereInput {
 }
 
 input VideoUpdateInput {
-  scheduleId: String
   youtubeId: String
-  thumbnail: String
   viewCount: Int
-  publishedAt: DateTime
+  thumbnail: String
+  schedule: ScheduleUpdateOneRequiredInput
+  chats: ChatUpdateManyWithoutVideoInput
+  timeLinks: TimeLinkUpdateManyWithoutVideoInput
 }
 
 input VideoUpdateManyMutationInput {
-  scheduleId: String
   youtubeId: String
-  thumbnail: String
   viewCount: Int
-  publishedAt: DateTime
+  thumbnail: String
+}
+
+input VideoUpdateOneRequiredWithoutChatsInput {
+  create: VideoCreateWithoutChatsInput
+  update: VideoUpdateWithoutChatsDataInput
+  upsert: VideoUpsertWithoutChatsInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoUpdateOneRequiredWithoutTimeLinksInput {
+  create: VideoCreateWithoutTimeLinksInput
+  update: VideoUpdateWithoutTimeLinksDataInput
+  upsert: VideoUpsertWithoutTimeLinksInput
+  connect: VideoWhereUniqueInput
+}
+
+input VideoUpdateWithoutChatsDataInput {
+  youtubeId: String
+  viewCount: Int
+  thumbnail: String
+  schedule: ScheduleUpdateOneRequiredInput
+  timeLinks: TimeLinkUpdateManyWithoutVideoInput
+}
+
+input VideoUpdateWithoutTimeLinksDataInput {
+  youtubeId: String
+  viewCount: Int
+  thumbnail: String
+  schedule: ScheduleUpdateOneRequiredInput
+  chats: ChatUpdateManyWithoutVideoInput
+}
+
+input VideoUpsertWithoutChatsInput {
+  update: VideoUpdateWithoutChatsDataInput!
+  create: VideoCreateWithoutChatsInput!
+}
+
+input VideoUpsertWithoutTimeLinksInput {
+  update: VideoUpdateWithoutTimeLinksDataInput!
+  create: VideoCreateWithoutTimeLinksInput!
 }
 
 input VideoWhereInput {
@@ -685,20 +1085,6 @@ input VideoWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  scheduleId: String
-  scheduleId_not: String
-  scheduleId_in: [String!]
-  scheduleId_not_in: [String!]
-  scheduleId_lt: String
-  scheduleId_lte: String
-  scheduleId_gt: String
-  scheduleId_gte: String
-  scheduleId_contains: String
-  scheduleId_not_contains: String
-  scheduleId_starts_with: String
-  scheduleId_not_starts_with: String
-  scheduleId_ends_with: String
-  scheduleId_not_ends_with: String
   youtubeId: String
   youtubeId_not: String
   youtubeId_in: [String!]
@@ -713,6 +1099,22 @@ input VideoWhereInput {
   youtubeId_not_starts_with: String
   youtubeId_ends_with: String
   youtubeId_not_ends_with: String
+  viewCount: Int
+  viewCount_not: Int
+  viewCount_in: [Int!]
+  viewCount_not_in: [Int!]
+  viewCount_lt: Int
+  viewCount_lte: Int
+  viewCount_gt: Int
+  viewCount_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
   thumbnail: String
   thumbnail_not: String
   thumbnail_in: [String!]
@@ -727,22 +1129,13 @@ input VideoWhereInput {
   thumbnail_not_starts_with: String
   thumbnail_ends_with: String
   thumbnail_not_ends_with: String
-  viewCount: Int
-  viewCount_not: Int
-  viewCount_in: [Int!]
-  viewCount_not_in: [Int!]
-  viewCount_lt: Int
-  viewCount_lte: Int
-  viewCount_gt: Int
-  viewCount_gte: Int
-  publishedAt: DateTime
-  publishedAt_not: DateTime
-  publishedAt_in: [DateTime!]
-  publishedAt_not_in: [DateTime!]
-  publishedAt_lt: DateTime
-  publishedAt_lte: DateTime
-  publishedAt_gt: DateTime
-  publishedAt_gte: DateTime
+  schedule: ScheduleWhereInput
+  chats_every: ChatWhereInput
+  chats_some: ChatWhereInput
+  chats_none: ChatWhereInput
+  timeLinks_every: TimeLinkWhereInput
+  timeLinks_some: TimeLinkWhereInput
+  timeLinks_none: TimeLinkWhereInput
   AND: [VideoWhereInput!]
   OR: [VideoWhereInput!]
   NOT: [VideoWhereInput!]
@@ -750,7 +1143,6 @@ input VideoWhereInput {
 
 input VideoWhereUniqueInput {
   id: ID
-  scheduleId: String
   youtubeId: String
 }
 `

@@ -1,4 +1,5 @@
 import { prisma } from "../../../../prisma/generated/prisma-client";
+import axios from "axios";
 const URL = `https://www.googleapis.com/youtube/v3/liveBroadcasts`;
 export default {
   Mutation: {
@@ -6,15 +7,13 @@ export default {
       if(!isAuthenticated(request)){
           return false;
       }
-      const schedule = await prisma.schedule({
-        id: schedule_id
-      });
+      const schedule = await prisma.updateSchedule({where:{id:schedule_id},data:{status:"READY"}})
 
+      console.log(schedule);
       const headers = {
         "Content-Type": "application/json",
         Authorization: "Bearer " + request.user.accessToken
       };
-
       const data = {
         snippet: {
           scheduledStartTime: schedule.startTime,
@@ -44,11 +43,15 @@ export default {
         headers
       });
 
+      console.log("bind youtube video::", val2.data);
+      
       return await prisma.createVideo({
-        videoId: val1.data.id,
-        title: val1.data.snippet.title,
-        desc: val1.data.snippet.description,
-        status: "PRIVATE"
+        youtubeId: val1.data.id,
+        schedule:{
+          connect:{
+            id:schedule_id
+          }
+        }
       });
     }
   }

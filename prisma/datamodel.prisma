@@ -11,27 +11,14 @@ enum TYPE{
   USER
 }
 
-
-
 type Schedule {
    id: ID! @id
    title:String!
    desc:String!
+   startTime:DateTime!
+   endTime:DateTime!
+
    status:Status! @default(value: RESERVED)
-   startTime:String!
-   endTime:String!
-
-
-
-}
-
-type Video {
-  id: ID! @id
-  scheduleId:String! @unique
-  youtubeId:String! @unique
-  thumbnail:String @default(value: "http://image.zdnet.co.kr/2019/06/25/imc_vkCh0ZOG9SNi6oP8.jpg")
-  viewCount:Int! @default(value: 0)
-  publishedAt: DateTime!
 }
 enum Status {
   RESERVED
@@ -41,9 +28,31 @@ enum Status {
   PUBLISHED
 }
 
- type TimeLink {
+
+type Video {
   id: ID! @id
-  videoId:String!
-  time:Int!
+  youtubeId:String! @unique
+  
+  viewCount:Int! @default(value: 0)
+  createdAt: DateTime! @createdAt
+  thumbnail:String @default(value: "http://image.zdnet.co.kr/2019/06/25/imc_vkCh0ZOG9SNi6oP8.jpg")
+
+  schedule : Schedule! @relation(name: "VideoOfSchedule")
+  chats:[Chat] @relation(name: "ChatOfVideo",onDelete: CASCADE)
+  timeLinks:[TimeLink] @relation(name: "TimeLinkOfVideo",onDelete: CASCADE)
+}
+
+type TimeLink {
+  id: ID! @id
+  seek:Int!
   desc:String!
+  video:Video! @relation(name: "TimeLinkOfVideo")
+}
+
+type Chat {
+  id: ID! @id
+  text: String!
+  from: User! @relation(name: "From")
+  createdAt: DateTime! @createdAt
+  video:Video! @relation(name: "ChatOfVideo")
 }

@@ -23,12 +23,15 @@ type Schedule {
 }
 
 type Video {
-  id:String!
-  scheduleId:String! 
-  youtubeId:String! 
-  thumbnail:String!
+  id:ID!
+  youtubeId:String!
   viewCount:Int!
-  publishedAt: String
+  createdAt: String!
+  thumbnail:String!
+  schedule:Schedule!
+  chats:[Chat]!
+  timeLinks:[TimeLink]!
+
 }
 enum Status {
   RESERVED
@@ -37,10 +40,19 @@ enum Status {
   COMPLETED
   PUBLISHED
 }
+
 type TimeLink {
-  id:String!
-  videoId:String!
-  time:Int!
+  id:ID!
+  seek:Int!
   desc:String!
+  video:Video!
 }
  
+
+type Chat {
+  id: ID!
+  text: String!
+  from: User!
+  createdAt: String!
+  video:Video!
+}
