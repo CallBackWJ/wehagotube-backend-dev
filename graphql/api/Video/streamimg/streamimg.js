@@ -21,14 +21,23 @@ export default {
 
         const broadcastStatus=status==="LIVE"?"live":"complete"
 
-
         const headers = {
           "Content-Type": "application/json",
           Authorization: "Bearer " + request.user.accessToken
         };
-
-        console.log("FFF",youtube_id,broadcastStatus);
-        const val = await axios({
+        let val=false;
+        if(status==="TEST"){
+         
+        await axios({
+            method: "post",
+            headers,
+            url:
+              URL +
+              "?id="+youtube_id+"&broadcastStatus=testing&part=id,snippet"
+          });
+          return true;
+        }
+         val = await axios({
             method: "post",
             headers,
             url:
