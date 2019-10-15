@@ -47,7 +47,7 @@ export default {
           URL +
           "/bind?id=" +
           val1.data.id +
-          "&part=id&streamId=NyYcimkxVcbqp9DUx57nog1569204542970828",
+          "&part=id&streamId=Gv__7R0LBq7FzM5UiXtBHQ1571114671676256",
         headers
       });
 
