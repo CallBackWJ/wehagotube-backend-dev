@@ -15,7 +15,7 @@ export default {
         if(payload.status==="READY"||payload.status==="LIVE"){
         return payload;
         }
-        return payload;
+        return null;
       }
     }
   }
