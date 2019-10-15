@@ -24,7 +24,7 @@ export default {
           description: schedule.desc
         },
         status: {
-          privacyStatus: "public"
+          privacyStatus: "unlisted"
         },
         contentDetails: {
            monitorStream: {
