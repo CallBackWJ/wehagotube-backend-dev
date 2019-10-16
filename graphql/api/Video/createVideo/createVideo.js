@@ -12,7 +12,8 @@ export default {
         data: { status: "READY" }
       });
 
-      console.log(schedule);
+      console.log("updateSchedule::",schedule);
+      console.log(request.user.accessToken)
       const headers = {
         "Content-Type": "application/json",
         Authorization: "Bearer " + request.user.accessToken
@@ -33,12 +34,25 @@ export default {
           }
       };
 
-      const val1 = await axios({
+      let val1=0;
+      try{
+      val1 = await axios({
         method: "post",
         url: URL + "?part=id,snippet,status,contentDetails&fields=id,snippet,status,contentDetails",
         headers,
         data
       });
+    }catch(e){
+      console.log("생성에러");
+      console.log(e)
+      console.log("에러종료");
+    }
+  
+    if(!val1)
+      return false;
+  
+      console.log("동영상생성",val1);
+
 
       console.log("create youtube video::", val1.data);
       const val2 = await axios({
@@ -50,8 +64,7 @@ export default {
           "&part=id&streamId=Gv__7R0LBq7FzM5UiXtBHQ1571114671676256",
         headers
       });
-
-      console.log("bind youtube video::", val2.data);
+      console.log("동영상바인드",val2.data);
 
       return await prisma.createVideo({
         youtubeId: val1.data.id,
