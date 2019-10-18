@@ -9,8 +9,7 @@ export default {
           }
         }
       });
-      
-      return val[0]
+      return await prisma.updateVideo({where:{id:val[0].id},data:{viewCount:val[0].viewCount+1}})
     }
   }
 };

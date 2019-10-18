@@ -25,12 +25,12 @@ export default {
           description: schedule.desc
         },
         status: {
-          privacyStatus: "unlisted"
+          privacyStatus: "public"
         },
         contentDetails: {
            monitorStream: {
               enableMonitorStream: true 
-            } 
+            },
           }
       };
 
@@ -44,7 +44,7 @@ export default {
       });
     }catch(e){
       console.log("생성에러");
-      console.log(e)
+      console.dir(e)
       console.log("에러종료");
     }
   
