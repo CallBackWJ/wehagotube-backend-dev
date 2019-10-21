@@ -11,9 +11,6 @@ export default {
         where: { id: schedule_id },
         data: { status: "READY" }
       });
-
-      console.log("updateSchedule::",schedule);
-      console.log(request.user.accessToken)
       const headers = {
         "Content-Type": "application/json",
         Authorization: "Bearer " + request.user.accessToken
@@ -35,7 +32,7 @@ export default {
       };
 
       let val1=0;
-      try{
+    try{
       val1 = await axios({
         method: "post",
         url: URL + "?part=id,snippet,status,contentDetails&fields=id,snippet,status,contentDetails",
@@ -48,13 +45,8 @@ export default {
       console.log("에러종료");
     }
   
-    if(!val1)
-      return false;
-  
-      console.log("동영상생성",val1);
+    if(!val1) return false;
 
-
-      console.log("create youtube video::", val1.data);
       const val2 = await axios({
         method: "post",
         url:

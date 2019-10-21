@@ -1,3 +1,3 @@
 type Query {
-    pastVideo:[Video]
+    pastVideo(page:Int):[Video]
 }
