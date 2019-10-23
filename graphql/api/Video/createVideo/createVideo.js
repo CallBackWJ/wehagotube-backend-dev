@@ -5,11 +5,11 @@ export default {
   Mutation: {
     createVideo: async (_, { schedule_id }, { request, isAuthenticated }) => {
       if (!isAuthenticated(request)) {
+        console.log("인증 풀림");
         return false;
       }
-      const schedule = await prisma.updateSchedule({
-        where: { id: schedule_id },
-        data: { status: "READY" }
+      const schedule = await prisma.schedules({
+        where: { id: schedule_id }
       });
       const headers = {
         "Content-Type": "application/json",
@@ -17,55 +17,63 @@ export default {
       };
       const data = {
         snippet: {
-          scheduledStartTime: schedule.startTime,
-          title: schedule.title,
-          description: schedule.desc
+          scheduledStartTime: schedule[0].startTime,
+          title: schedule[0].title,
+          description: schedule[0].desc
         },
         status: {
-          privacyStatus: "public"
+          privacyStatus: "unlisted"
         },
         contentDetails: {
-           monitorStream: {
-              enableMonitorStream: true 
-            },
+          monitorStream: {
+            enableMonitorStream: false
           }
+        }
       };
 
-      let val1=0;
-    try{
-      val1 = await axios({
-        method: "post",
-        url: URL + "?part=id,snippet,status,contentDetails&fields=id,snippet,status,contentDetails",
-        headers,
-        data
-      });
-    }catch(e){
-      console.log("생성에러");
-      console.dir(e)
-      console.log("에러종료");
-    }
-  
-    if(!val1) return false;
+      let val = 0;
+      try {
+        val = await axios({
+          method: "post",
+          url:
+            URL +
+            "?part=id,snippet,status,contentDetails&fields=id,snippet,status,contentDetails",
+          headers,
+          data
+        });
+      } catch (e) {
+        console.log("생성에러");
+        return false;
+      }
 
-      const val2 = await axios({
-        method: "post",
-        url:
-          URL +
-          "/bind?id=" +
-          val1.data.id +
-          "&part=id&streamId=Gv__7R0LBq7FzM5UiXtBHQ1571114671676256",
-        headers
-      });
-      console.log("동영상바인드",val2.data);
-
-      return await prisma.createVideo({
-        youtubeId: val1.data.id,
+      try {
+        await axios({
+          method: "post",
+          url:
+            URL +
+            "/bind?id=" +
+            val.data.id +
+            "&part=id&streamId=Gv__7R0LBq7FzM5UiXtBHQ1571114671676256",
+          headers
+        });
+      } catch (e) {
+        console.log("바인딩 에러");
+        return false;
+      }
+      await prisma.createVideo({
+        youtubeId: val.data.id,
         schedule: {
           connect: {
             id: schedule_id
           }
         }
       });
+      await prisma.updateSchedule({
+        where: { id: schedule_id },
+        data: { status: "READY" }
+      });
+     
+      return  true;
     }
   }
 };

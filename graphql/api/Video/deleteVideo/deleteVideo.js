@@ -1,19 +1,15 @@
 import { prisma } from "../../../../prisma/generated/prisma-client";
 import axios from "axios";
-const URL = "https://www.googleapis.com/youtube/v3/liveBroadcasts/transition";
-
 export default {
   Mutation: {
-    streamimg: async (
+    deleteVideo: async (
       _,
-      { schedule_id, youtube_id, status },
+      { schedule_id, youtube_id },
       { request, isAuthenticated }
     ) => {
       if (!isAuthenticated(request)) {
         return false;
       }
-
-      const broadcastStatus = status === "LIVE" ? "live" : "complete";
       const headers = {
         "Content-Type": "application/json",
         Authorization: "Bearer " + request.user.accessToken
@@ -21,24 +17,22 @@ export default {
 
       try {
         await axios({
-          method: "post",
+          method: "delete",
           headers,
           url:
-            URL +
-            "?id=" +
-            youtube_id +
-            "&broadcastStatus=" +
-            broadcastStatus +
-            "&part=id,snippet"
+            "https://www.googleapis.com/youtube/v3/liveBroadcasts?id=" +
+            youtube_id
         });
         await prisma.updateSchedule({
           where: { id: schedule_id },
-          data: { status: status }
+          data: { status: "RESERVED" }
         });
+        await prisma.deleteVideo({ youtubeId: youtube_id });
       } catch (e) {
-        console.log("스트림 실패");
+        console.log("삭제 실패");
         return false;
       }
+      console.log("삭제 성공");
       return true;
     }
   }

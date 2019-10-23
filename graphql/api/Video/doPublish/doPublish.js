@@ -3,11 +3,7 @@ import axios from "axios";
 const URL = "https://www.googleapis.com/youtube/v3/liveBroadcasts";
 export default {
   Mutation: {
-    updateSchedule: async (
-      _,
-      { id, title, desc, startTime, endTime, status },
-      { request, isAuthenticated }
-    ) => {
+    doPublish: async (_, { id, publish }, { request, isAuthenticated }) => {
       if (!isAuthenticated(request)) {
         return false;
       }
@@ -15,10 +11,13 @@ export default {
       const video = await prisma.videos({
         where: {
           schedule: {
-            id: id
+            id
           }
         }
       });
+
+      const schedule = await prisma.schedule({ id });
+
 
       if (video.length) {
         const headers = {
@@ -28,13 +27,13 @@ export default {
         const data = {
           id: video[0].youtubeId,
           snippet: {
-            scheduledStartTime: startTime,
-            scheduledEndTime: endTime,
-            title: title,
-            description: desc
+            scheduledStartTime: schedule.startTime,
+            scheduledEndTime:schedule.endTime,
+            title: schedule.title,
+            description:schedule.desc
           },
           status: {
-            privacyStatus: status === "PUBLISHED" ? "public" : "unlisted"
+            privacyStatus: publish ? "public" : "unlisted"
           },
           contentDetails: {
             enableContentEncryption: false,
@@ -60,11 +59,7 @@ export default {
 
       await prisma.updateSchedule({
         data: {
-          title,
-          desc,
-          startTime,
-          endTime,
-          status
+          status: publish ? "PUBLISHED" : "COMPLETED"
         },
         where: {
           id
