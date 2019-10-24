@@ -1,6 +1,7 @@
 import { prisma } from "../../../../prisma/generated/prisma-client";
 import { generateToken } from "../../../../auth/jwt";
 import {authenticateGoogle} from "../../../../auth/google"
+import { stringify } from "querystring";
 export default {
   Mutation: {
     signUp: async (_, args,{ request, response }) => {
@@ -16,7 +17,7 @@ export default {
       } catch (error) {
         console.log("구글 에러:",error)
       }
-      return "fff"
+      return stringify(data);
 
       
       const { name, avatar, email, accessToken } = args;
