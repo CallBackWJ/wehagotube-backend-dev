@@ -6,7 +6,7 @@ import {authenticateJwt,isAuthenticated} from "../auth/jwt"
 
 const server = new GraphQLServer({
   schema,
-  context:({request})=>({request,isAuthenticated})
+  context:({request,response})=>({request,response,isAuthenticated})
 });
 
 server.express.use(logger("dev"));
