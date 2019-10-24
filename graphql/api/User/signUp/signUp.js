@@ -14,7 +14,7 @@ export default {
       try {
         const { data, info } = await authenticateGoogle(request, response);
        console.log("data::",data,"info::",info)
-       return data;
+       return "test:"+data;
       } catch (error) {
         console.log("구글 에러:",error)
       }
