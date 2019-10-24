@@ -14,10 +14,11 @@ export default {
       try {
         const { data, info } = await authenticateGoogle(request, response);
        console.log("data::",data,"info::",info)
+       return JSON.stringify(data);
       } catch (error) {
         console.log("구글 에러:",error)
       }
-      return JSON.stringify(data);
+      return "JSON.stringify(data)";
 
       
       const { name, avatar, email, accessToken } = args;
