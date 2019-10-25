@@ -302,6 +302,8 @@ export type UserOrderByInput =
   | "avatar_DESC"
   | "accessToken_ASC"
   | "accessToken_DESC"
+  | "refreshToken_ASC"
+  | "refreshToken_DESC"
   | "permission_ASC"
   | "permission_DESC";
 
@@ -438,6 +440,20 @@ export interface UserWhereInput {
   accessToken_not_starts_with?: Maybe<String>;
   accessToken_ends_with?: Maybe<String>;
   accessToken_not_ends_with?: Maybe<String>;
+  refreshToken?: Maybe<String>;
+  refreshToken_not?: Maybe<String>;
+  refreshToken_in?: Maybe<String[] | String>;
+  refreshToken_not_in?: Maybe<String[] | String>;
+  refreshToken_lt?: Maybe<String>;
+  refreshToken_lte?: Maybe<String>;
+  refreshToken_gt?: Maybe<String>;
+  refreshToken_gte?: Maybe<String>;
+  refreshToken_contains?: Maybe<String>;
+  refreshToken_not_contains?: Maybe<String>;
+  refreshToken_starts_with?: Maybe<String>;
+  refreshToken_not_starts_with?: Maybe<String>;
+  refreshToken_ends_with?: Maybe<String>;
+  refreshToken_not_ends_with?: Maybe<String>;
   permission?: Maybe<TYPE>;
   permission_not?: Maybe<TYPE>;
   permission_in?: Maybe<TYPE[] | TYPE>;
@@ -665,6 +681,7 @@ export interface UserCreateInput {
   name: String;
   avatar?: Maybe<String>;
   accessToken?: Maybe<String>;
+  refreshToken?: Maybe<String>;
   permission: TYPE;
 }
 
@@ -727,6 +744,7 @@ export interface UserUpdateDataInput {
   name?: Maybe<String>;
   avatar?: Maybe<String>;
   accessToken?: Maybe<String>;
+  refreshToken?: Maybe<String>;
   permission?: Maybe<TYPE>;
 }
 
@@ -1041,6 +1059,7 @@ export interface UserUpdateInput {
   name?: Maybe<String>;
   avatar?: Maybe<String>;
   accessToken?: Maybe<String>;
+  refreshToken?: Maybe<String>;
   permission?: Maybe<TYPE>;
 }
 
@@ -1049,6 +1068,7 @@ export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
   avatar?: Maybe<String>;
   accessToken?: Maybe<String>;
+  refreshToken?: Maybe<String>;
   permission?: Maybe<TYPE>;
 }
 
@@ -1184,6 +1204,7 @@ export interface User {
   name: String;
   avatar?: String;
   accessToken?: String;
+  refreshToken?: String;
   permission: TYPE;
 }
 
@@ -1193,6 +1214,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   name: () => Promise<String>;
   avatar: () => Promise<String>;
   accessToken: () => Promise<String>;
+  refreshToken: () => Promise<String>;
   permission: () => Promise<TYPE>;
 }
 
@@ -1204,6 +1226,7 @@ export interface UserSubscription
   name: () => Promise<AsyncIterator<String>>;
   avatar: () => Promise<AsyncIterator<String>>;
   accessToken: () => Promise<AsyncIterator<String>>;
+  refreshToken: () => Promise<AsyncIterator<String>>;
   permission: () => Promise<AsyncIterator<TYPE>>;
 }
 
@@ -1215,6 +1238,7 @@ export interface UserNullablePromise
   name: () => Promise<String>;
   avatar: () => Promise<String>;
   accessToken: () => Promise<String>;
+  refreshToken: () => Promise<String>;
   permission: () => Promise<TYPE>;
 }
 
@@ -1876,6 +1900,7 @@ export interface UserPreviousValues {
   name: String;
   avatar?: String;
   accessToken?: String;
+  refreshToken?: String;
   permission: TYPE;
 }
 
@@ -1887,6 +1912,7 @@ export interface UserPreviousValuesPromise
   name: () => Promise<String>;
   avatar: () => Promise<String>;
   accessToken: () => Promise<String>;
+  refreshToken: () => Promise<String>;
   permission: () => Promise<TYPE>;
 }
 
@@ -1898,6 +1924,7 @@ export interface UserPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
   avatar: () => Promise<AsyncIterator<String>>;
   accessToken: () => Promise<AsyncIterator<String>>;
+  refreshToken: () => Promise<AsyncIterator<String>>;
   permission: () => Promise<AsyncIterator<TYPE>>;
 }
 

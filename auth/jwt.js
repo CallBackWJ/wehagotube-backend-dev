@@ -33,7 +33,7 @@ export const isAuthenticated = request => request.user;
 
 export const generateToken = email =>{
   const opts = {}
-  opts.expiresIn =3600;
+  //opts.expiresIn =3600;
   return jwt.sign({ email }, process.env.JWT_SECRET,opts);
 }
 

@@ -725,6 +725,7 @@ type User {
   name: String!
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE!
 }
 
@@ -740,6 +741,7 @@ input UserCreateInput {
   name: String!
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE!
 }
 
@@ -764,6 +766,8 @@ enum UserOrderByInput {
   avatar_DESC
   accessToken_ASC
   accessToken_DESC
+  refreshToken_ASC
+  refreshToken_DESC
   permission_ASC
   permission_DESC
 }
@@ -774,6 +778,7 @@ type UserPreviousValues {
   name: String!
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE!
 }
 
@@ -800,6 +805,7 @@ input UserUpdateDataInput {
   name: String
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE
 }
 
@@ -808,6 +814,7 @@ input UserUpdateInput {
   name: String
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE
 }
 
@@ -816,6 +823,7 @@ input UserUpdateManyMutationInput {
   name: String
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE
 }
 
@@ -902,6 +910,20 @@ input UserWhereInput {
   accessToken_not_starts_with: String
   accessToken_ends_with: String
   accessToken_not_ends_with: String
+  refreshToken: String
+  refreshToken_not: String
+  refreshToken_in: [String!]
+  refreshToken_not_in: [String!]
+  refreshToken_lt: String
+  refreshToken_lte: String
+  refreshToken_gt: String
+  refreshToken_gte: String
+  refreshToken_contains: String
+  refreshToken_not_contains: String
+  refreshToken_starts_with: String
+  refreshToken_not_starts_with: String
+  refreshToken_ends_with: String
+  refreshToken_not_ends_with: String
   permission: TYPE
   permission_not: TYPE
   permission_in: [TYPE!]

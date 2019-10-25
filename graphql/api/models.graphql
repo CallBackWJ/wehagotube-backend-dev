@@ -5,6 +5,7 @@ type User {
   name: String!
   avatar: String
   accessToken: String
+  refreshToken: String
   permission: TYPE!
 }
 
