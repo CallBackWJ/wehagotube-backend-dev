@@ -17,9 +17,11 @@ export default {
         })
         .then(response => {
           console.log("response", JSON.stringify(response, null, 2));
+          return JSON.stringify(response, null, 2)
         })
         .catch(error => {
           console.log("failed", error);
+          return JSON.stringify(error, null, 2)
         });
 
 
