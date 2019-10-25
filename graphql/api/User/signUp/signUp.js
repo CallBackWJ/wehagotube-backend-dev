@@ -44,10 +44,7 @@ export default {
       });
 
 
-      return JSON.stringify(user);
-      const exist = await prisma.$exists.user({
-        OR: [{name:user.name},{ email:user.email }]
-      });
+      const exist = await prisma.$exists.user({email:user.email});
 
       if (exist) {
         await prisma.updateUser({
