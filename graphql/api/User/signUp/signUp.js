@@ -12,8 +12,7 @@ export default {
           code: args.code,
           client_id: "582721858124-msmrbfu9hs073da415js0l60jg5e8ej3.apps.googleusercontent.com",
           client_secret: "_ghW7KRIeNYDwpUu-WIU4Pah",
-          //redirect_uri: "http://localhost:3000",
-          redirect_uri: "https://wehagotube-frontend-dev.netlify.com",
+          redirect_uri:process.env.MODE==="dev"?"http://localhost:3000":"https://wehagotube-frontend-dev.netlify.com",
           grant_type: 'authorization_code',
         }
       })
