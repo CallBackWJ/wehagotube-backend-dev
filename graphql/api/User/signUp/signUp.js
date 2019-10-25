@@ -42,9 +42,12 @@ export default {
         console.log("error:",err.response.data);
         return err.response.data
       });
-
+      const i=0;
 
       const exist = await prisma.$exists.user({email:user.email});
+
+      return "fff:"+exist;
+
 
       if (exist) {
         await prisma.updateUser({
