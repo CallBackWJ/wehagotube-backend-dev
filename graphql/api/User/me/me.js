@@ -31,7 +31,7 @@ export default {
             id: user.id
           },
           data: {
-            refreshToken: newToken
+            accessToken: newToken
           }
         });
       } else {
