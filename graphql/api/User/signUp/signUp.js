@@ -25,6 +25,8 @@ export default {
         console.log("error:",err.response.data);
         return err.response.data
       });
+      
+      return tokens.access_token;
 
       const user=await axios({
         url: 'https://www.googleapis.com/oauth2/v1/userinfo',
