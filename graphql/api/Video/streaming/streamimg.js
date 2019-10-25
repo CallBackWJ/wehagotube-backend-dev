@@ -4,7 +4,7 @@ const URL = "https://www.googleapis.com/youtube/v3/liveBroadcasts/transition";
 
 export default {
   Mutation: {
-    streamimg: async (
+    streaming: async (
       _,
       { schedule_id, youtube_id, status },
       { request, isAuthenticated }
@@ -37,6 +37,7 @@ export default {
         });
       } catch (e) {
         console.log("스트림 실패");
+        console.log(e);
         return false;
       }
       return true;
