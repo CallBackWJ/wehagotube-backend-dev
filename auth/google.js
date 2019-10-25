@@ -28,7 +28,7 @@ export const authenticateGoogle = (req, res) =>
   new Promise((resolve, reject) => {
     passport.authenticate(
       "google-authcode",
-      { session: false },
+      { session: false,accessType:"offline",prompt:"consent",scope:["profile","email","https://www.googleapis.com/auth/youtube","https://www.googleapis.com/auth/youtube.force-ssl"]},
       (err, data, info) => {
         if (err) reject(err);
         resolve({ data, info });
