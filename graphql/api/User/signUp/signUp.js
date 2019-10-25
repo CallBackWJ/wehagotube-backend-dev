@@ -1,26 +1,31 @@
 import { prisma } from "../../../../prisma/generated/prisma-client";
 import { generateToken } from "../../../../auth/jwt";
-import {authenticateGoogle} from "../../../../auth/google"
+import axios from "axios";
 
 export default {
   Mutation: {
-    signUp: async (_, args,{ request, response }) => {
+    signUp: async (_, args, { request, response }) => {
+     
+      const val = await axios
+        .post("https://oauth2.googleapis.com/token", {
+          headers: { "Content-type": "application/x-www-form-urlencoded" },
+          code:args.accessToken,
+          client_id: "582721858124-msmrbfu9hs073da415js0l60jg5e8ej3.apps.googleusercontent.com",
+          client_secret: "_ghW7KRIeNYDwpUu-WIU4Pah",
+          redirect_uri:"http://localhost:4000",
+          grant_type:"authorization_code"
+        })
+        .then(response => {
+          console.log("response", JSON.stringify(response, null, 2));
+        })
+        .catch(error => {
+          console.log("failed", error);
+        });
 
-      request.body = {
-        ...request.body,
-        code:args.accessToken,
-      };
-      console.log(request.body)
-      try {
-        const { data, info } = await authenticateGoogle(request, response);
-       console.log("data::",data,"info::",info)
-       return "test:"+data;
-      } catch (error) {
-        console.log("구글 에러:",error)
-      }
-      return "JSON.stringify(data)";
 
-      
+        console.log(val)
+
+      return val;
       const { name, avatar, email, accessToken } = args;
       const exist = await prisma.$exists.user({
         OR: [{ name }, { email }]
