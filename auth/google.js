@@ -17,7 +17,8 @@ passport.use(
       clientID:
         "582721858124-msmrbfu9hs073da415js0l60jg5e8ej3.apps.googleusercontent.com",
       clientSecret: "_ghW7KRIeNYDwpUu-WIU4Pah",
-      callbackURL:"https://wehagotube-backend-dev.herokuapp.com/"
+      callbackURL:"https://wehagotube-backend-dev.herokuapp.com/",
+      grant_type:"authorization_code"
     },
     GoogleTokenStrategyCallback
   )
