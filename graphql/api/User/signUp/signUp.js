@@ -26,7 +26,6 @@ export default {
         return err.response.data
       });
       
-      return tokens.access_token;
 
       const user=await axios({
         url: 'https://www.googleapis.com/oauth2/v1/userinfo',
@@ -45,6 +44,7 @@ export default {
       });
 
 
+      return JSON.stringify(user);
       const exist = await prisma.$exists.user({
         OR: [{name:user.name},{ email:user.email }]
       });
