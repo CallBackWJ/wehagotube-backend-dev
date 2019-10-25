@@ -12,7 +12,7 @@ export default {
           code:args.accessToken,
           client_id: "582721858124-msmrbfu9hs073da415js0l60jg5e8ej3.apps.googleusercontent.com",
           client_secret: "_ghW7KRIeNYDwpUu-WIU4Pah",
-          redirect_uri:"http://localhost:4000",
+          redirect_uri:"https://wehagotube-backend-dev.herokuapp.com/",
           grant_type:"authorization_code"
         })
         .then(response => {
