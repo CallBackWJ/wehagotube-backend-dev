@@ -12,7 +12,8 @@ export default {
           code: args.code,
           client_id: "582721858124-msmrbfu9hs073da415js0l60jg5e8ej3.apps.googleusercontent.com",
           client_secret: "_ghW7KRIeNYDwpUu-WIU4Pah",
-          redirect_uri: "http://localhost:3000",
+          //redirect_uri: "http://localhost:3000",
+          redirect_uri: "https://wehagotube-frontend-dev.netlify.com",
           grant_type: 'authorization_code',
         }
       })
@@ -68,32 +69,9 @@ export default {
           permission: process.env.ADMIN === email ? "ADMIN" : "USER"
         });
       }
-
-
-
-
-     
+   
       return generateToken(user.email)
-      
-      // const data2=axios({
-      //   url: 'https://www.googleapis.com/oauth2/v4/token',
-      //   method: 'post',
-      //   params: {
-      //     client_id: "582721858124-msmrbfu9hs073da415js0l60jg5e8ej3.apps.googleusercontent.com",
-      //     client_secret: "_ghW7KRIeNYDwpUu-WIU4Pah",
-      //     refresh_token: data1,
-      //     grant_type: 'refresh_token',
-      //   }
-      // })
-      // .then((response) => {
-      //   console.log(response.data);
-      //   return response.data.access_token
-      // })
-      // .catch(function(err) {
-      //   console.log("error:",err.response.data);
-      //   return err.response.data
-      // });
-     
+       
     }
   }
 };
