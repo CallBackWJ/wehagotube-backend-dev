@@ -42,11 +42,8 @@ export default {
         console.log("error:",err.response.data);
         return err.response.data
       });
-      const i=0;
 
       const exist = await prisma.$exists.user({email:user.email});
-
-      return "fff:"+exist;
 
 
       if (exist) {
@@ -68,7 +65,7 @@ export default {
           email:user.email,
           accessToken:tokens.access_token,
           refreshToken:tokens.refresh_token,
-          permission: process.env.ADMIN === email ? "ADMIN" : "USER"
+          permission: process.env.ADMIN === user.email ? "ADMIN" : "USER"
         });
       }
    
