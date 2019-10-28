@@ -12,7 +12,7 @@ export default {
       },
       resolve: payload => {
          console.log(payload);
-        if(payload.status==="READY"||payload.status==="LIVE"){
+        if(payload.status==="READY"||payload.status==="LIVE"||payload.status==="COMPLETED"){
         return payload;
         }
         return null;
